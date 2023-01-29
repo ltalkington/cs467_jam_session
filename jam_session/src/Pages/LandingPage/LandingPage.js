@@ -1,16 +1,16 @@
-import NavBar from "../Components/NavBar/NavBar";
+import NavBar from "../../Components/NavBar/NavBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import concert1 from "../Assets/concert1.jpg";
-import concert2 from "../Assets/concert2.jpg";
-import guitar1 from "../Assets/guitar1.jpg";
-import guitarbeach from "../Assets/guitarbeach.jpg";
+import concert1 from "../../Assets/concert1.jpg";
+import concert2 from "../../Assets/concert2.jpg";
+import guitar1 from "../../Assets/guitar1.jpg";
+import guitarbeach from "../../Assets/guitarbeach.jpg";
 
 import Button from "react-bootstrap/Button";
 import { GiGuitarBassHead } from "react-icons/gi";
 import Divider from "@mui/material/Divider";
-import Footer from "../Components/Landing/Footer.js";
+import Footer from "../../Components/Landing/Footer.js";
 
 function LandingPage() {
   return (
