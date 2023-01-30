@@ -79,7 +79,7 @@ export default function Footer() {
             <MDBCol md="4" lg="3" xl="3" className="mx-auto mb-md-0 mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
               <p>Corvallis, OR</p>
-              <p>fantasysports@gmail.com</p>
+              <p>jamsessions@gmail.com</p>
             </MDBCol>
           </MDBRow>
         </MDBContainer>
