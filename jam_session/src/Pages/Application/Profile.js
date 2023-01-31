@@ -17,7 +17,7 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import Stack from '@mui/material/Stack';
 import StarsIcon from '@mui/icons-material/Stars';
 import Typography from '@mui/material/Typography';
-import userProfilePicture from "../../Assets/user_profile_picture.jpg";
+import userProfilePicture from "../../Assets/user_profile_picture.png";
 
 function Profile() {
   return (
