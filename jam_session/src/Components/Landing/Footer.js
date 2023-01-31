@@ -6,8 +6,11 @@ import {
   MDBCol,
   MDBIcon,
 } from "mdb-react-ui-kit";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function Footer() {
+  const { loginWithRedirect } = useAuth0();
+
   return (
     <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
       <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
@@ -51,8 +54,8 @@ export default function Footer() {
             <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Application</h6>
               <p>
-                <a href="#!" className="text-reset">
-                  Login
+                <a href="#!" className="text-reset" onClick={() => loginWithRedirect()}>
+                  Log In
                 </a>
               </p>
               <p>
@@ -65,8 +68,8 @@ export default function Footer() {
             <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Useful links</h6>
               <p>
-                <a href="#!" className="text-reset">
-                  Login
+                <a href="#!" className="text-reset" onClick={() => loginWithRedirect()}>
+                  Log In
                 </a>
               </p>
               <p>

@@ -2,6 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
+import LoginButton from "../Authenticate/LoginButton";
 
 function CollapsibleExample() {
   const handlePricingClickScroll = () => {
@@ -31,10 +32,8 @@ function CollapsibleExample() {
             <Nav.Link onClick={handlePricingClickScroll}>Demo</Nav.Link>
           </Nav>
           <Nav>
-            <Button id="sign-in-button" variant="">
-              Login{" "}
-            </Button>
-            <br></br>
+            <LoginButton />
+            <br/>
             <Button id="register-button" variant="outline-success">
               Register
             </Button>
