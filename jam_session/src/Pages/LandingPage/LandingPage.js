@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import { GiGuitarBassHead } from "react-icons/gi";
 import Divider from "@mui/material/Divider";
 import Footer from "../../Components/Landing/Footer.js";
+import LoginButton from "../../Components/Authenticate/LoginButton";
 
 function LandingPage() {
   return (
@@ -30,15 +31,7 @@ function LandingPage() {
                 jam with!
               </p>
 
-              <Button
-                tag="a"
-                color="primary"
-                id="landing-button-left"
-                wideMobile
-                href="#"
-              >
-                Sign Up
-              </Button>
+              <LoginButton text="Sign Up"></LoginButton>
               <Button
                 tag="a"
                 color="primary"

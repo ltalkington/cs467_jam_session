@@ -32,8 +32,8 @@ function CollapsibleExample() {
             <Nav.Link onClick={handlePricingClickScroll}>Demo</Nav.Link>
           </Nav>
           <Nav>
-            <LoginButton />
-            <br/>
+            <LoginButton text="Login" />
+            <br />
             <Button id="register-button" variant="outline-success">
               Register
             </Button>
