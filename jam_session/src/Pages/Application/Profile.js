@@ -2,23 +2,22 @@ import ResponsiveDrawer from "../../Components/Application/Sidebar/Sidebar.js";
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import SpeedIcon from '@mui/icons-material/Speed';
+import Stack from '@mui/material/Stack';
+import StarsIcon from '@mui/icons-material/Stars';
+import Typography from '@mui/material/Typography';
 import userProfilePicture from "../../Assets/user_profile_picture.jpg";
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 
 function Profile() {
   return (
@@ -35,8 +34,10 @@ function Profile() {
         <Typography variant="h1" align="center" color="text.primary" paragraph>
           Example User
         </Typography>
-        <Typography variant="h5" align="center" color="text.primary" paragraph>
-          <LocationOnIcon />Portland, OR
+        <Typography variant="p" align="center" color="text.primary" paragraph>
+          <span><SpeedIcon />Expert </span>
+          <span><MonetizationOnIcon />$50/hour </span>
+          <span><LocationOnIcon />Portland, OR </span>
         </Typography>
       </AppBar>
       <main>
@@ -47,7 +48,7 @@ function Profile() {
             pb: 6,
           }}
         >
-          <Container maxWidth="sm">
+          <Container maxWidth="md">
             {/* Short introduction by the user */}
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
               Welcome to my page! I mainly focus on classical pieces, but I am branching
@@ -60,42 +61,167 @@ function Profile() {
               <Avatar>B</Avatar>
               <Avatar>C</Avatar>
             </Stack>
+            <Grid container alignItems="center" justifyContent="center" >
+              <Grid item sx={{ p: 2 }} >
+                <Card elevation={12}
+                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }} >
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Instruments
+                    </Typography>
+                    <Typography>
+                      <List>
+                        <ListItem>
+                          <ListItemText
+                            primary="Guitar"
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText
+                            primary="Trumpet"
+                          />
+                        </ListItem>
+                      </List>
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item sx={{ p: 2 }}>
+                <Card elevation={12}
+                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Liked Genres
+                    </Typography>
+                    <Typography>
+                      <List>
+                        <ListItem>
+                          <ListItemText
+                            primary="Folk"
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText
+                            primary="Classical"
+                          />
+                        </ListItem>
+                      </List>
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item sx={{ p: 2 }}>
+                <Card elevation={12}
+                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Disliked Genres
+                    </Typography>
+                    <Typography>
+                      <List>
+                        <ListItem>
+                          <ListItemText
+                            primary="Hip-Hop"
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText
+                            primary="Rock"
+                          />
+                        </ListItem>
+                      </List>
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
 
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image="https://source.unsplash.com/random"
-                    alt="random"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+          {/* Availability */}
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} md={6} justifyContent="center"
+              alignItems="center" >
+              <Card
+                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+              >
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6" component="div">
+                    Availability
+                  </Typography>
+                  <List>
+                    <ListItem>
+                      <ListItemText
+                        primary="10/13/23"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="10/14/23"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="10/17/23"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="10/18/23"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="10/30/23"
+                      />
+                    </ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card
+                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+              >
+                <CardContent sx={{ flexGrow: 1 }} >
+                  <Typography variant="h6" component="div">
+                    Ratings
+                  </Typography>
+                  <Typography variant="p" component="div">
+                    <StarsIcon /> Overall: 4.6
+                  </Typography>
+                  <List>
+                    <ListItem>
+                      <ListItemText
+                        primary="4"
+                        secondary="6/13/23"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="3"
+                        secondary="4/3/22"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="5"
+                        secondary="9/5/21"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="5"
+                        secondary="1/19/20" />
+                    </ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
         </Container>
       </main>
