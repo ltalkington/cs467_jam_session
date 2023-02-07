@@ -40,7 +40,7 @@ function ResponsiveDrawer(props) {
       >
         <span style={{ paddingRight: 10 }}>Jam Session</span>
         <span style={{ paddingLeft: 10 }}>
-          <SearchIcon />
+          <a style={{ color: "black" }} href="/searchresults"><SearchIcon /></a>
         </span>
         <span style={{ paddingLeft: 10 }}>
           <NotificationsIcon />
