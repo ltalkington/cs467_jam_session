@@ -2,6 +2,8 @@ import ResponsiveDrawer from "../../Components/Application/Sidebar/Sidebar.js";
 import Box from "@mui/material/Box";
 import JamSessions from "../../Components/Application/Jam Session/JamSessions.js";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+
 
 function JamSession() {
   let drawerWidth = 240;
@@ -10,6 +12,9 @@ function JamSession() {
     <header className="App-header3">
       <div>
         <ResponsiveDrawer></ResponsiveDrawer>
+        <Typography variant="h1" align="center" color="text.white" paragraph>
+          Jam Sessions
+        </Typography>
         <Box
           component="main"
           sx={{
