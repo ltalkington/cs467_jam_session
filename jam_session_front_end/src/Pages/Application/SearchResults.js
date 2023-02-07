@@ -62,6 +62,11 @@ function SearchResults() {
           <JamSessions></JamSessions>
           <JamSessions></JamSessions>
           <JamSessions></JamSessions>
+          <JamSessions></JamSessions>
+          <JamSessions></JamSessions>
+          <JamSessions></JamSessions>
+          <JamSessions></JamSessions>
+          <JamSessions></JamSessions>
         </Grid>
       </Box>
     </div>
