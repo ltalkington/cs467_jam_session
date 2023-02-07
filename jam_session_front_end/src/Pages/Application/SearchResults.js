@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack';
 import JamSessions from "../../Components/Application/Jam Session/JamSessions.js";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+
 
 
 function SearchResults() {
@@ -16,7 +18,9 @@ function SearchResults() {
     <div className="App-header3">
       <ResponsiveDrawer></ResponsiveDrawer>
 
-      <h1> Search Results </h1>
+      <Typography variant="h1" align="center" color="text.white" paragraph>
+        Search Results
+      </Typography>
 
       <Stack
         direction="row"
@@ -26,7 +30,7 @@ function SearchResults() {
       >
         <Paper
           component="form"
-          sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+          sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600, }}
         >
           <InputBase
             sx={{ ml: 1, flex: 1 }}
