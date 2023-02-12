@@ -1,3 +1,5 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
 import NavBar from "../../Components/NavBar/NavBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -12,11 +14,15 @@ import { GiGuitarBassHead } from "react-icons/gi";
 import Divider from "@mui/material/Divider";
 import Footer from "../../Components/Landing/Footer.js";
 import LoginButton from "../../Components/Authenticate/LoginButton";
+import LogoutButton from "../../Components/Authenticate/LogoutButton";
+import SignupButton from "../../Components/Authenticate/SignupButton";
 
 function LandingPage() {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar/>
       <div>
         <Container>
           <Row className="align-items-center">
@@ -31,16 +37,25 @@ function LandingPage() {
                 jam with!
               </p>
 
-              <LoginButton text="Sign Up"></LoginButton>
-              <Button
-                tag="a"
-                color="primary"
-                id="landing-button-right"
-                wideMobile
-                href="#"
-              >
-                Learn More
-              </Button>
+              {!isAuthenticated && (
+                  <>
+                    <LoginButton id="landing-button-left" text="Log In"/>
+                    <SignupButton
+                    tag="a"
+                    color="primary"
+                    id="landing-button-right"
+                    text="Sign Up"
+                    variant="outline-success"
+                    wideMobile
+                    href="#"
+                    />
+                  </>
+                )}
+              {isAuthenticated && (
+                  <>
+                    <LogoutButton text="Log Out"/>
+                  </>
+              )}
             </Col>
             <Col>
               <img

@@ -1,8 +1,11 @@
+import {useAuth0} from "@auth0/auth0-react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Button from "react-bootstrap/Button";
-import LoginButton from "../Authenticate/LoginButton";
+import LoginButton from "../../Components/Authenticate/LoginButton";
+import SignupButton from "../Authenticate/SignupButton";
+import LogoutButton from "../Authenticate/LogoutButton";
 
 function CollapsibleExample() {
   const handlePricingClickScroll = () => {
@@ -19,6 +22,8 @@ function CollapsibleExample() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const { isAuthenticated } = useAuth0();
+
   return (
     <Navbar collapseOnSelect expand="lg" id="navbar-landing">
       <Container>
@@ -31,13 +36,18 @@ function CollapsibleExample() {
             <Nav.Link onClick={handleFeaturesClickScroll}>Features</Nav.Link>
             <Nav.Link onClick={handlePricingClickScroll}>Demo</Nav.Link>
           </Nav>
-          <Nav>
-            <LoginButton text="Login" />
-            <br />
-            <Button id="register-button" variant="outline-success">
-              Register
-            </Button>
-          </Nav>
+          {!isAuthenticated && (
+              <Nav>
+                <LoginButton text="Log In" />
+                <br />
+                <SignupButton id="register-button" text="Register" variant="outline-success"/>
+              </Nav>
+          )}
+          {isAuthenticated && (
+              <Nav>
+                <LogoutButton text="Log Out" />
+              </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

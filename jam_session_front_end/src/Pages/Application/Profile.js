@@ -1,5 +1,6 @@
 import ResponsiveDrawer from "../../Components/Application/Sidebar/Sidebar.js";
 import * as React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -17,23 +18,34 @@ import SpeedIcon from "@mui/icons-material/Speed";
 import Stack from "@mui/material/Stack";
 import StarsIcon from "@mui/icons-material/Stars";
 import Typography from "@mui/material/Typography";
-import userProfilePicture from "../../Assets/user_profile_picture.png";
 
 function Profile() {
+  // This will grab user data from the login process and make it available.
+  // user.name, user.picture, and user.email are available.
+  // Other data may need to be pulled from a database query.
+  const { user } = useAuth0();
+
+  // If no user is logged in, no Profile is displayed. But the route is already
+  // protected with an Authentication Guard, so it shouldn't be an issue.
+  if (!user) {
+    return null;
+  }
+
   return (
     <div>
-      <ResponsiveDrawer></ResponsiveDrawer>
+      <ResponsiveDrawer/>
 
       <CssBaseline />
       <AppBar position="relative">
         <Avatar
-          alt="Example User"
-          src={userProfilePicture}
+          alt={user.name}
+          src={user.picture}
           sx={{ width: 200, height: 200, mx: "auto" }}
           variant="circular"
         />
         <Typography variant="h1" align="center" color="text.primary" paragraph>
-          Example User
+          {user.name}
+          {user.email}
         </Typography>
         <Typography variant="p" align="center" color="text.primary" paragraph>
           <span>
