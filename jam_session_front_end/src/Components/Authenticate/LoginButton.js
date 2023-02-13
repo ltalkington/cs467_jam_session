@@ -5,12 +5,20 @@ import Button from "react-bootstrap/Button";
 const LoginButton = ({ text }) => {
   const { loginWithRedirect } = useAuth0();
 
+  const handleLogin = async () => {
+    await loginWithRedirect({
+        appState: {
+            returnTo: '/timeline',
+        },
+    });
+  };
+
   return (
     <Button
-      onClick={() => loginWithRedirect()}
+      onClick={handleLogin}
       tag="a"
       color="primary"
-      id="landing-button-left"
+      className="button_login"
       wideMobile
     >
       {text}
@@ -18,4 +26,4 @@ const LoginButton = ({ text }) => {
   );
 };
 
-export default LoginButton;
+export default LoginButton
