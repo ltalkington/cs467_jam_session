@@ -1,4 +1,4 @@
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -27,7 +27,7 @@ function CollapsibleExample() {
   return (
     <Navbar collapseOnSelect expand="lg" id="navbar-landing">
       <Container>
-        <Navbar.Brand class="nav-text" href="#home">
+        <Navbar.Brand class="nav-text" href="/">
           Jam Session
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -37,16 +37,16 @@ function CollapsibleExample() {
             <Nav.Link onClick={handlePricingClickScroll}>Demo</Nav.Link>
           </Nav>
           {!isAuthenticated && (
-              <Nav>
-                <LoginButton text="Log In" />
-                <br />
-                <SignupButton id="register-button" text="Register" variant="outline-success"/>
-              </Nav>
+            <Nav>
+              <LoginButton text="Log In" />
+              <br />
+              <SignupButton id="register-button" text="Register" variant="outline-success" />
+            </Nav>
           )}
           {isAuthenticated && (
-              <Nav>
-                <LogoutButton text="Log Out" />
-              </Nav>
+            <Nav>
+              <LogoutButton text="Log Out" />
+            </Nav>
           )}
         </Navbar.Collapse>
       </Container>
