@@ -4,7 +4,6 @@ import JamSessions from "../../Components/Application/Jam Session/JamSessions.js
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-
 function JamSession() {
   let drawerWidth = 240;
 
@@ -20,7 +19,6 @@ function JamSession() {
           sx={{
             flexGrow: 1,
             p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
         >
           {" "}

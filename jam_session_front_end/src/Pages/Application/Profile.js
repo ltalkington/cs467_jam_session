@@ -33,36 +33,41 @@ function Profile() {
 
   return (
     <div>
-      <ResponsiveDrawer/>
+      <ResponsiveDrawer />
 
       <CssBaseline />
-      <AppBar position="relative">
-        <Avatar
-          alt={user.name}
-          src={user.picture}
-          sx={{ width: 200, height: 200, mx: "auto" }}
-          variant="circular"
-        />
-        <Typography variant="h1" align="center" color="text.primary" paragraph>
-          {user.name}
-          {user.email}
-        </Typography>
-        <Typography variant="p" align="center" color="text.primary" paragraph>
-          <span>
-            <SpeedIcon />
-            Expert{" "}
-          </span>
-          <span>
-            <MonetizationOnIcon />
-            $50/hour{" "}
-          </span>
-          <span>
-            <LocationOnIcon />
-            Portland, OR{" "}
-          </span>
-        </Typography>
-      </AppBar>
-      <main>
+      <header className="App-header3">
+        <AppBar position="relative" color={"secondary"}>
+          <Avatar
+            alt={user.name}
+            src={user.picture}
+            sx={{ width: 200, height: 200, mx: "auto" }}
+            variant="circular"
+          />
+          <Typography
+            variant="h1"
+            align="center"
+            color="text.primary"
+            paragraph
+          >
+            {user.name}
+          </Typography>
+          <Typography variant="p" align="center" color="text.primary" paragraph>
+            <span>
+              <SpeedIcon />
+              Expert{" "}
+            </span>
+            <span>
+              <MonetizationOnIcon />
+              $50/hour{" "}
+            </span>
+            <span>
+              <LocationOnIcon />
+              Portland, OR{" "}
+            </span>
+          </Typography>
+        </AppBar>
+
         <Box
           sx={{
             bgcolor: "background.paper",
@@ -249,7 +254,7 @@ function Profile() {
             </Grid>
           </Grid>
         </Container>
-      </main>
+      </header>
     </div>
   );
 }
