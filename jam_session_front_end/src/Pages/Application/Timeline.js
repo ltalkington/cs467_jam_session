@@ -11,7 +11,6 @@ function Timeline() {
   const [tabber, setTabber] = useState(0);
   useEffect(() => {
     Component(tabber);
-    console.log(tabber);
     return () => {};
   }, []);
   const Component = (tabber) => {
