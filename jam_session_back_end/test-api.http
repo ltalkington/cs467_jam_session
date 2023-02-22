@@ -1,0 +1,40 @@
+
+
+###
+POST http://localhost:8000/createjamsession HTTP/1.1
+content-type: application/json
+
+{
+    "userId": 1,
+    "gigDate": "01-01-2023 00:03:44",
+    "location": "New York",
+    "genre": "hard rock",
+    "instrumentsNeeded": "guitar",
+    "experienceNeeded": "advanced",
+    "fee": 300
+}
+
+###
+GET http://localhost:8000/displayjamsession HTTP/1.1
+
+###
+GET http://localhost:3000/movies/61aa738d06fff73d2f652a6d HTTP/1.1
+
+###
+
+PUT http://localhost:8000/updatejamsession HTTP/1.1
+content-type: application/json
+
+{
+    "post_jam_id": 3,
+    "gigDate": "01-01-2023 00:03:44",
+    "location": "New York",
+    "genre": "soft rock",
+    "instrumentsNeeded": "piano",
+    "experienceNeeded": "advanced",
+    "fee": 300
+}
+
+###
+DELETE http://localhost:8000/deletejamsession/3 HTTP/1.1
+content-type: application/json

@@ -1,13 +1,9 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-
-mongoose.connect('mongodb://localhost/mydb');
-
-var employeeSchema = new Schema({
-    name: String,
-    address: String,
-    phone: String,
-    email: String
+var mysql = require("mysql");
+var pool = mysql.createPool({
+  connectionLimit: 10,
+  host: "jamsession.c4xx6wbnjy4u.us-east-1.rds.amazonaws.com",
+  user: "jammeradmin",
+  password: "JamSession2023",
+  database: "jam_session",
 });
- 
-module.exports = mongoose.model('Employee', employeeSchema);
+module.exports.pool = pool;
