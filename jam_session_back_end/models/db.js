@@ -1,9 +1,12 @@
-var mysql = require("mysql");
-var pool = mysql.createPool({
+import * as mysql from 'mysql';
+import 'dotenv/config';
+
+const pool = mysql.createPool({
   connectionLimit: 10,
-  host: "jamsession.c4xx6wbnjy4u.us-east-1.rds.amazonaws.com",
-  user: "jammeradmin",
-  password: "JamSession2023",
-  database: "jam_session",
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DB,
 });
+
 module.exports.pool = pool;

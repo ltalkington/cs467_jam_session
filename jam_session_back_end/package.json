@@ -2,13 +2,19 @@
   "name": "jam_session_back_end",
   "version": "1.0.0",
   "description": "Backend server for Jam Session",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start server.js --watch --ignore-watch='node_modules'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5"
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "pm2": "^5.2.2"
   }
 }
