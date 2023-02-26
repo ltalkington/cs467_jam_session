@@ -28,7 +28,7 @@ router.post("/jamsession/create", async function (req, res) {
         res.send(result);
     } catch (error) {
         console.log(JSON.stringify(error));
-        res.write(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
     }
 });
 
@@ -48,7 +48,7 @@ router.put("/jamsession/:id/edit", async function (req, res) {
         res.send(result);
     } catch (error) {
         console.log(JSON.stringify(error));
-        res.write(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
     }
 });
 
@@ -59,7 +59,7 @@ router.get("/jamsession", async function (req, res) {
         res.send(result);
     } catch (error) {
         console.log(JSON.stringify(error));
-        res.write(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
     }
 });
 
@@ -70,7 +70,7 @@ router.get("/jamsession/:id", async function (req, res) {
         res.send(result);
     } catch (error) {
         console.log(JSON.stringify(error));
-        res.write(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
     }
 });
 
@@ -81,7 +81,7 @@ router.delete("/jamsession/:id/delete", async function (req, res) {
         res.send(result);
     } catch (error) {
         console.log(JSON.stringify(error));
-        res.write(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
     }
 });
 
