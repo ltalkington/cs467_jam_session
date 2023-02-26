@@ -1,4 +1,4 @@
-const db = require('../models/db');
+const db = require('./db');
 
 async function getJamSessions() {
     query = "SELECT * FROM Jam_Sessions";
