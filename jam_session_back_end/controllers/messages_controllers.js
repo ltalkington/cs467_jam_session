@@ -1,13 +1,19 @@
 const db = require("./db");
 
-async function getMessageByReceiverId(jam_session_id) {
-    inserts = [jam_session_id];
+async function getMessagesByReceiverId(message_id) {
+    inserts = [message_id];
     query = "SELECT * FROM Messages WHERE receiverID= ?";
     return db.pool.query(query, inserts);
 }
 
-async function getMessageByMessageId(jam_session_id) {
-    inserts = [jam_session_id];
+async function getMessagesBySenderId(message_id) {
+    inserts = [message_id];
+    query = "SELECT * FROM Messages WHERE senderID= ?";
+    return db.pool.query(query, inserts);
+}
+
+async function getMessageByMessageId(message_id) {
+    inserts = [message_id];
     query = "SELECT * FROM Messages WHERE messageID= ?";
     return db.pool.query(query, inserts);
 }
@@ -30,8 +36,8 @@ async function deleteMessage(inserts) {
 }
 
 module.exports = {
-    getMessages,
-    getMessageByReceiverId,
+    getMessagesByReceiverId,
+    getMessagesBySenderId,
     getMessageByMessageId,
     createMessage,
     updateMessage,
