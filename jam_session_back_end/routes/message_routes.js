@@ -10,6 +10,7 @@ app.use(
         extended: true,
     })
 );
+
 //creates a message
 router.post("/message/new", async function (req, res) {
     let inserts = [
