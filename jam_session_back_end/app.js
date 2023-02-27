@@ -1,9 +1,6 @@
 var express = require("express"); // We are using the express library for the web server
 var app = express(); // We need to instantiate an express object to interact with the server in our code
-PORT = 8000;
-var bodyParser = require("body-parser");
-var db = require("./controllers/db");
-var router = express.Router();
+var PORT = 8000;
 var cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
