@@ -18,6 +18,8 @@ import ContactMailIcon from "@mui/icons-material/ContactMail";
 import PianoIcon from "@mui/icons-material/Piano";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const drawerWidth = 240;
 
@@ -40,7 +42,9 @@ function ResponsiveDrawer(props) {
       >
         <span style={{ paddingRight: 10 }}>Jam Session</span>
         <span style={{ paddingLeft: 10 }}>
-          <a style={{ color: "black" }} href="/searchresults"><SearchIcon /></a>
+          <a style={{ color: "black" }} href="/searchresults">
+            <SearchIcon />
+          </a>
         </span>
         <span style={{ paddingLeft: 10 }}>
           <NotificationsIcon />
@@ -71,9 +75,21 @@ function ResponsiveDrawer(props) {
 
         <ListItem button key="Jam Sessions" component={Link} to="/jamsessions">
           <ListItemIcon>
-            <PianoIcon />
+            <GraphicEqIcon />
           </ListItemIcon>
           <ListItemText primary="Jam Sessions" />
+        </ListItem>
+
+        <ListItem
+          button
+          key="Your Jam Sessions"
+          component={Link}
+          to="/yourjamsessions"
+        >
+          <ListItemIcon>
+            <PianoIcon />
+          </ListItemIcon>
+          <ListItemText primary="Your Jam Sessions" />
         </ListItem>
         <ListItem button key="Messages" component={Link} to="/messages">
           <ListItemIcon>
@@ -86,6 +102,12 @@ function ResponsiveDrawer(props) {
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary="Settings" />
+        </ListItem>
+        <ListItem button key="Log Out" component={Link} to="/logout">
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Log Out" />
         </ListItem>
       </List>
     </div>

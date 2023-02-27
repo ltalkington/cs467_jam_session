@@ -11,11 +11,37 @@ import CardHeader from "@mui/material/CardHeader";
 import Box from "@mui/material/Box";
 import { useAuth0 } from "@auth0/auth0-react";
 import Grid from "@mui/material/Grid";
+import { useNavigate } from "react-router-dom";
+
 import "./JamSession.css";
 
-export default function JamSessions({ jamSessions, key }) {
+export default function OwnJamSessions({ jamSessions, key, loadJamSessions }) {
   const { user } = useAuth0();
+  const navigate = useNavigate();
+
   console.log(jamSessions, key, user.email, jamSessions.user_id);
+
+  const deleteButton = async (e) => {
+    // On submit of the form, send a DELETE request with the ID to the server.
+    let data = {
+      jam_post_id: jamSessions.jam_post_id,
+    };
+
+    const response = await fetch("http://localhost:8000/deletejamsession", {
+      method: "DELETE",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.status === 200 || response.status === 201) {
+      alert("Successfully deleted the Room!");
+      loadJamSessions();
+    } else {
+      alert(`Failed to delete the room, status code = ${response.status}`);
+      loadJamSessions();
+    }
+  };
   return (
     <CardGroup>
       <Card
@@ -59,12 +85,36 @@ export default function JamSessions({ jamSessions, key }) {
         >
           <Box sx={{ width: "100%" }}>
             <Grid>
-              <Button size="small">Share</Button>
-              <Button size="small">Message</Button>
-              <Button size="medium" className="jam-fee">
-                {" "}
-                {"$".concat(jamSessions.fee)}
+              <Button
+                size="small"
+                onClick={() => {
+                  navigate("/updatejamsession", {
+                    state: {
+                      id: jamSessions.jam_post_id,
+                      date: jamSessions.gig_date,
+                      city: jamSessions.jam_city,
+                      state: jamSessions.jam_state,
+                      genre: jamSessions.genre,
+                      instruments: jamSessions.instruments_needed,
+                      experience: jamSessions.experience_needed,
+                      fee: jamSessions.fee,
+                      title: jamSessions.title,
+                      body: jamSessions.body,
+                    },
+                  });
+                }}
+              >
+                Update
               </Button>
+              <Button
+                size="small"
+                onClick={() => {
+                  deleteButton(jamSessions);
+                }}
+              >
+                Delete
+              </Button>
+              <Button size="small">Share</Button>
             </Grid>
           </Box>
         </CardActions>

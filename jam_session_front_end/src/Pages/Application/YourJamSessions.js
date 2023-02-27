@@ -1,6 +1,6 @@
 import ResponsiveDrawer from "../../Components/Application/Sidebar/Sidebar.js";
 import Box from "@mui/material/Box";
-import JamSessions from "../../Components/Application/Jam Session/JamSessions.js";
+import OwnJamSessions from "../../Components/Application/Jam Session/OwnJamSessions.js";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import SpeedDial from "@mui/material/SpeedDial";
@@ -9,9 +9,9 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import AddIcon from "@mui/icons-material/Add";
 import FolderIcon from "@mui/icons-material/Folder";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { useState, useEffect } from "react";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -25,11 +25,23 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }));
 
-function JamSession() {
-  let drawerWidth = 240;
-  const [jamSessions, setJamSessions] = useState();
+function YourJamSessions() {
+  const user_id = 1;
   const navigate = useNavigate();
 
+  let drawerWidth = 240;
+  const [jamSessions, setJamSessions] = useState();
+
+  const loadJamSessions = async () => {
+    const response = await fetch(
+      "http://localhost:8000/displayjamsession/" + user_id
+    );
+    const jams = await response.json();
+    setJamSessions(jams);
+  };
+  useEffect(() => {
+    loadJamSessions();
+  }, []);
   const actions = [
     {
       icon: <AddIcon onClick={() => navigate("/createjamsession")} />,
@@ -40,21 +52,11 @@ function JamSession() {
       name: "Your Jam Sessions",
     },
   ];
-
-  const loadJamSessions = async () => {
-    const response = await fetch("http://localhost:8000/displayjamsession");
-    const jams = await response.json();
-    setJamSessions(jams);
-  };
-  useEffect(() => {
-    loadJamSessions();
-  }, []);
-
   return (
     <header className="App-header3">
       <ResponsiveDrawer></ResponsiveDrawer>
       <Typography variant="h1" align="center" color="text.white" paragraph>
-        Jam Sessions
+        Your Jam Sessions
       </Typography>
 
       <Box
@@ -77,7 +79,11 @@ function JamSession() {
           }}
         >
           {jamSessions?.map((jam, i) => (
-            <JamSessions key={i} jamSessions={jam}></JamSessions>
+            <OwnJamSessions
+              key={i}
+              jamSessions={jam}
+              loadJamSessions={loadJamSessions}
+            ></OwnJamSessions>
           ))}
         </Grid>
       </Box>
@@ -100,4 +106,4 @@ function JamSession() {
   );
 }
 
-export default JamSession;
+export default YourJamSessions;

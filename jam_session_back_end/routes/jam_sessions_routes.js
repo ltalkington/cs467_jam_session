@@ -1,88 +1,100 @@
 /**
  * For routes regarding jam sessions
  */
-const express = require('express');
-const router = express.Router();
+const express = require("express");
+const app = express.Router();
+const db = require("../controllers/db");
+
 const js_controller = require("../controllers/jam_session_controllers");
-router.use(
-    express.urlencoded({
-        extended: true,
-    })
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
 );
-
 //creates a jam session
-router.post("/jamsession/create", async function (req, res) {
-    let inserts = [
-        req.body.userId,
-        new Date(),
-        new Date(req.body.gigDate),
-        req.body.location,
-        req.body.genre,
-        req.body.instrumentsNeeded,
-        req.body.experienceNeeded,
-        req.body.fee,
-    ];
+app.post("/createjamsession", function (req, res) {
+  req.body.postedDate = new Date();
+  var newDate = new Date(req.body.gigDate);
+  req.body.gigDate = newDate;
 
-    try {
-        const result = await js_controller.createJamSession(inserts);
-        res.send(result);
-    } catch (error) {
-        console.log(JSON.stringify(error));
-        res.status(400).send(JSON.stringify(error));
+  let inserts = [
+    req.body.userId,
+    req.body.postedDate,
+    req.body.gigDate,
+    req.body.jam_city,
+    req.body.jam_state,
+    req.body.genre,
+    req.body.instrumentsNeeded,
+    req.body.experienceNeeded,
+    req.body.fee,
+    req.body.title,
+    req.body.body,
+  ];
+
+  sql =
+    "INSERT INTO Jam_Sessions (user_id, posted_date, gig_date, jam_city, jam_state, genre, instruments_needed, experience_needed, fee, title, body) VALUES (?,?,?,?,?,?,?,?,?,?, ?)";
+  db.pool.query(sql, inserts, function (error, result, fields) {
+    if (error) {
+      console.log(JSON.stringify(error));
+      res.write(JSON.stringify(error));
+    } else {
+      res.send(result);
     }
+  });
 });
 
-// updates jam session
-router.put("/jamsession/:id/edit", async function (req, res) {
-    let inserts = [
-        req.body.gigDate,
-        req.body.location,
-        req.body.genre,
-        req.body.instrumentsNeeded,
-        req.body.experienceNeeded,
-        req.body.fee,
-        req.params.id,
-    ];
-    try {
-        const result = await js_controller.updateJamSession(inserts);
-        res.send(result);
-    } catch (error) {
-        console.log(JSON.stringify(error));
-        res.status(400).send(JSON.stringify(error));
+// updates rooms
+app.put("/updatejamsession", function (req, res) {
+  let inserts = [
+    req.body.gigDate,
+    req.body.city,
+    req.body.state,
+    req.body.genre,
+    req.body.instrumentsNeeded,
+    req.body.experienceNeeded,
+    req.body.fee,
+    req.body.title,
+    req.body.body,
+    req.body.post_jam_id,
+  ];
+  query =
+    "UPDATE Jam_Sessions SET gig_date=?, jam_city=?, jam_state=?, genre=?, instruments_needed=?, experience_needed=?, fee=?, title=?, body=? WHERE jam_post_id=?";
+  db.pool.query(query, inserts, (err, result) => {
+    if (err) {
+      res.write(JSON.stringify(err));
+    } else {
+      res.send(result);
     }
+  });
 });
 
-//get all jam sessions
-router.get("/jamsession", async function (req, res) {
-    try {
-        const result = await js_controller.getJamSessions();
-        res.send(result);
-    } catch (error) {
-        console.log(JSON.stringify(error));
-        res.status(400).send(JSON.stringify(error));
-    }
+//displays jam session
+app.get("/displayjamsession", function (req, res) {
+  query = "SELECT * FROM Jam_Sessions";
+  db.pool.query(query, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
 });
 
-//get single jam session
-router.get("/jamsession/:id", async function (req, res) {
-    try {
-        const result = await js_controller.getJamSessionById([req.query.id]);
-        res.send(result);
-    } catch (error) {
-        console.log(JSON.stringify(error));
-        res.status(400).send(JSON.stringify(error));
-    }
+app.get("/displayjamsession/:id", function (req, res) {
+  query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
+  db.pool.query(query, req.params.id, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
 });
 
 //deletes a jam session
-router.delete("/jamsession/:id/delete", async function (req, res) {
-    try {
-        const result = await js_controller.deleteJamSession([req.query.id]);
-        res.send(result);
-    } catch (error) {
-        console.log(JSON.stringify(error));
-        res.status(400).send(JSON.stringify(error));
+app.delete("/deletejamsession", function (req, res) {
+  console.log(req.body.jam_post_id);
+  query = "DELETE FROM Jam_Sessions WHERE jam_post_id = ?";
+  db.pool.query(query, req.body.jam_post_id, (err, result) => {
+    if (err) {
+      res.write(JSON.stringify(err));
+    } else {
+      res.send(result);
     }
+  });
 });
-
-module.exports = router;
+module.exports = app;

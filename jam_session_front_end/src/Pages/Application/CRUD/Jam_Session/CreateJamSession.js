@@ -4,21 +4,26 @@ import Grid from "@mui/material/Grid";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreateJamSession() {
   const [gigDate, setGigDate] = useState();
-  const [location, setLocation] = useState("Saint Louis");
+  const [jamCity, setJamCity] = useState("Saint Louis");
+  const [jamState, setJamState] = useState("Missouri");
   const [genre, setGenre] = useState("Rock");
   const [instrumentsNeeded, setInstrumentsNeeded] = useState("Guitar");
   const [experienceNeeded, setExperienceNeeded] = useState("Advanced");
   const [feeOffered, setFeeOffered] = useState("300");
+  const [title, setTitle] = useState("Jam Session Wanted");
+  const [body, setBody] = useState("Who wants to play? ");
+  const navigate = useNavigate();
 
   const submitButton = async (e) => {
     e.preventDefault();
     console.log(genre);
     if (
       gigDate === undefined ||
-      location === undefined ||
+      jamCity === undefined ||
       genre === undefined ||
       instrumentsNeeded === undefined
     ) {
@@ -26,8 +31,8 @@ function CreateJamSession() {
       if (gigDate === undefined) {
         alert("invalid entry in gigDate");
       }
-      if (location === undefined) {
-        alert("invalid entry in location");
+      if (jamCity === undefined) {
+        alert("invalid entry in City");
       }
       if (genre === undefined) {
         alert("invalid entry in genre");
@@ -41,11 +46,14 @@ function CreateJamSession() {
       let data = {
         userId: 1,
         gigDate: gigDate,
-        location: location,
+        jam_city: jamCity,
+        jam_state: jamState,
         genre: genre,
         instrumentsNeeded: instrumentsNeeded,
         experienceNeeded: experienceNeeded,
         fee: feeOffered,
+        title: title,
+        body: body,
       };
 
       const response = await fetch("http://localhost:8000/createjamsession", {
@@ -55,6 +63,13 @@ function CreateJamSession() {
           "Content-Type": "application/json",
         },
       });
+
+      if (response.status === 200 || response.status === 201) {
+        alert("Successfully added the Jam Session!");
+        navigate("/jamsessions");
+      } else {
+        alert(`Failed to add Jam Session, status code = ${response.status}`);
+      }
     }
   };
   return (
@@ -112,11 +127,19 @@ function CreateJamSession() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Location</Form.Label>
+              <Form.Label>Jam City</Form.Label>
               <Form.Control
-                type="location"
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder={location}
+                type="city"
+                onChange={(e) => setJamCity(e.target.value)}
+                placeholder={jamCity}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Jam State</Form.Label>
+              <Form.Control
+                type="state"
+                onChange={(e) => setJamState(e.target.value)}
+                placeholder={jamState}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -149,6 +172,22 @@ function CreateJamSession() {
                 type="fee"
                 onChange={(e) => setFeeOffered(e.target.value)}
                 placeholder={feeOffered}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Jam Session Title</Form.Label>
+              <Form.Control
+                type="title"
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={title}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Jam Session Body</Form.Label>
+              <Form.Control
+                type="body"
+                onChange={(e) => setBody(e.target.value)}
+                placeholder={body}
               />
             </Form.Group>
             <Button variant="primary" onClick={submitButton}>
