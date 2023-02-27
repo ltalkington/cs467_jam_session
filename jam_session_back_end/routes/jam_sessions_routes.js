@@ -2,27 +2,22 @@
  * For routes regarding jam sessions
  */
 const express = require("express");
-const app = express.Router();
-const db = require("../controllers/db");
+const router = express.Router();
 
 const js_controller = require("../controllers/jam_session_controllers");
-app.use(
+router.use(
   express.urlencoded({
     extended: true,
   })
 );
 //creates a jam session
-app.post("/createjamsession", function (req, res) {
-  req.body.postedDate = new Date();
-  var newDate = new Date(req.body.gigDate);
-  req.body.gigDate = newDate;
-
+router.post("/jamsession/new", function (req, res) {
   let inserts = [
     req.body.userId,
-    req.body.postedDate,
-    req.body.gigDate,
-    req.body.jam_city,
-    req.body.jam_state,
+    new Date(),
+    new Date(req.body.gigDate),
+    req.body.city,
+    req.body.state,
     req.body.genre,
     req.body.instrumentsNeeded,
     req.body.experienceNeeded,
@@ -31,20 +26,16 @@ app.post("/createjamsession", function (req, res) {
     req.body.body,
   ];
 
-  sql =
-    "INSERT INTO Jam_Sessions (user_id, posted_date, gig_date, jam_city, jam_state, genre, instruments_needed, experience_needed, fee, title, body) VALUES (?,?,?,?,?,?,?,?,?,?, ?)";
-  db.pool.query(sql, inserts, function (error, result, fields) {
-    if (error) {
-      console.log(JSON.stringify(error));
-      res.write(JSON.stringify(error));
-    } else {
-      res.send(result);
-    }
-  });
+  try {
+    js_controller.createJamSession(inserts, res);
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(400).send(JSON.stringify(error));
+  }
 });
 
 // updates rooms
-app.put("/updatejamsession", function (req, res) {
+router.put("/jamsession/:id/edit", function (req, res) {
   let inserts = [
     req.body.gigDate,
     req.body.city,
@@ -55,46 +46,55 @@ app.put("/updatejamsession", function (req, res) {
     req.body.fee,
     req.body.title,
     req.body.body,
-    req.body.post_jam_id,
+    req.params.id,
   ];
-  query =
-    "UPDATE Jam_Sessions SET gig_date=?, jam_city=?, jam_state=?, genre=?, instruments_needed=?, experience_needed=?, fee=?, title=?, body=? WHERE jam_post_id=?";
-  db.pool.query(query, inserts, (err, result) => {
-    if (err) {
-      res.write(JSON.stringify(err));
-    } else {
-      res.send(result);
-    }
-  });
+  try {
+    js_controller.updateJamSession(inserts, res);
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(400).send(JSON.stringify(error));
+  }
 });
 
-//displays jam session
-app.get("/displayjamsession", function (req, res) {
-  query = "SELECT * FROM Jam_Sessions";
-  db.pool.query(query, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+//displays all jam sessions
+router.get("/jamsession", function (req, res) {
+  try {
+    js_controller.getJamSessions(res);
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(400).send(JSON.stringify(error));
+  }
 });
 
-app.get("/displayjamsession/:id", function (req, res) {
+// get single jam session by id
+router.get("/jamsession/:id", function (req, res) {
   query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
-  db.pool.query(query, req.params.id, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+  try {
+    js_controller.getJamSessionById(req.params.id, res);
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(400).send(JSON.stringify(error));
+  }
+});
+
+// get jam sessions by user id
+router.get("/user/:id/jamsession/", function (req, res) {
+  query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
+  try {
+    js_controller.getJamSessionByUserId(req.params.id, res);
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(400).send(JSON.stringify(error));
+  }
 });
 
 //deletes a jam session
-app.delete("/deletejamsession", function (req, res) {
-  console.log(req.body.jam_post_id);
-  query = "DELETE FROM Jam_Sessions WHERE jam_post_id = ?";
-  db.pool.query(query, req.body.jam_post_id, (err, result) => {
-    if (err) {
-      res.write(JSON.stringify(err));
-    } else {
-      res.send(result);
-    }
-  });
+router.delete("/jamsession/:id/delete", function (req, res) {
+  try {
+    js_controller.deleteJamSession(req.params.id, res);
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(400).send(JSON.stringify(error));
+  }
 });
-module.exports = app;
+module.exports = router;

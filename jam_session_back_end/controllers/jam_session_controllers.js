@@ -7,9 +7,17 @@ async function getJamSessions(res) {
   });
 }
 
-async function getJamSessionByUserId(jam_session_id, res) {
-  inserts = [jam_session_id];
+async function getJamSessionByUserId(user_id, res) {
+  inserts = [user_id];
   query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
+  await db.pool.query(query, inserts, function (error, results, fields) {
+    return db.returnCallback(error, results, fields, res);
+  });
+}
+
+async function getJamSessionById(jam_session_id, res) {
+  inserts = [jam_session_id];
+  query = "SELECT * FROM Jam_Sessions WHERE jam_post_id = ?";
   await db.pool.query(query, inserts, function (error, results, fields) {
     return db.returnCallback(error, results, fields, res);
   });
@@ -41,6 +49,7 @@ async function deleteJamSession(inserts, res) {
 module.exports = {
   getJamSessions,
   getJamSessionByUserId,
+  getJamSessionById,
   createJamSession,
   updateJamSession,
   deleteJamSession,
