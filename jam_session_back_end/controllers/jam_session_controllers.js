@@ -1,31 +1,41 @@
 const db = require("./db");
 
-async function getJamSessions() {
+async function getJamSessions(res) {
   query = "SELECT * FROM Jam_Sessions";
-  return db.pool.query(query);
+  await db.pool.query(query, function (error, results, fields) {
+    return db.returnCallback(error, results, fields, res);
+  });
 }
 
-async function getJamSessionByUserId(jam_session_id) {
+async function getJamSessionByUserId(jam_session_id, res) {
   inserts = [jam_session_id];
   query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
-  return db.pool.query(query, inserts);
+  await db.pool.query(query, inserts, function (error, results, fields) {
+    return db.returnCallback(error, results, fields, res);
+  });
 }
 
-async function createJamSession(inserts) {
-  sql =
+async function createJamSession(inserts, res) {
+  query =
     "INSERT INTO Jam_Sessions (user_id, posted_date, gig_date, jam_city, jam_state, genre, instruments_needed, experience_needed, fee, title, body) VALUES (?,?,?,?,?,?,?,?,?,?, ?)";
-  return db.pool.query(sql, inserts);
+  await db.pool.query(query, inserts, function (error, results, fields) {
+    return db.returnCallback(error, results, fields, res);
+  });
 }
 
-async function updateJamSession(inserts) {
+async function updateJamSession(inserts, res) {
   query =
     "UPDATE Jam_Sessions SET gig_date=?, jam_city=?, jam_state=?, genre=?, instruments_needed=?, experience_needed=?, fee=?, title=?, body=? WHERE jam_post_id=?";
-  return db.pool.query(query, inserts);
+  await db.pool.query(query, inserts, function (error, results, fields) {
+    return db.returnCallback(error, results, fields, res);
+  });
 }
 
-async function deleteJamSession(inserts) {
+async function deleteJamSession(inserts, res) {
   query = "DELETE FROM Jam_Sessions WHERE jam_post_id = ?";
-  return db.pool.query(query, inserts);
+  await db.pool.query(query, inserts, function (error, results, fields) {
+    return db.returnCallback(error, results, fields, res);
+  });
 }
 
 module.exports = {
