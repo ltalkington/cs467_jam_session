@@ -1,9 +1,9 @@
 /**
- * For routes regarding jam sessions
+ * For routes regarding messages
  */
 const express = require("express");
 const app = express.Router();
-const db = require("../controllers/db");
+const message_controller = require("../controllers/messages_controllers");
 
 app.use(
     express.urlencoded({
@@ -11,89 +11,82 @@ app.use(
     })
 );
 //creates a message
-app.post("/messages/new", function (req, res) {
-    req.body.postedDate = new Date();
-    var newDate = new Date(req.body.gigDate);
-    req.body.gigDate = newDate;
-
+router.post("/message/new", async function (req, res) {
     let inserts = [
-        req.body.userId,
-        req.body.postedDate,
-        req.body.gigDate,
-        req.body.jam_city,
-        req.body.jam_state,
-        req.body.genre,
-        req.body.instrumentsNeeded,
-        req.body.experienceNeeded,
-        req.body.fee,
-        req.body.title,
-        req.body.body,
+        req.body.senderID,
+        req.body.receiverID,
+        req.body.content
     ];
 
-    sql =
-        "INSERT INTO Jam_Sessions (user_id, posted_date, gig_date, jam_city, jam_state, genre, instruments_needed, experience_needed, fee, title, body) VALUES (?,?,?,?,?,?,?,?,?,?, ?)";
-    db.pool.query(sql, inserts, function (error, result, fields) {
-        if (error) {
-            console.log(JSON.stringify(error));
-            res.write(JSON.stringify(error));
-        } else {
-            res.send(result);
-        }
-    });
+    try {
+        const result = await message_controller.createMessage(inserts);
+        res.send(result);
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
+    }
 });
 
-// updates rooms
-app.put("/updatejamsession", function (req, res) {
+// updates message
+router.put("/message/:id/edit", async function (req, res) {
     let inserts = [
-        req.body.gigDate,
-        req.body.city,
-        req.body.state,
-        req.body.genre,
-        req.body.instrumentsNeeded,
-        req.body.experienceNeeded,
-        req.body.fee,
-        req.body.title,
-        req.body.body,
-        req.body.post_jam_id,
+        req.body.senderID,
+        req.body.receiverID,
+        req.body.content
     ];
-    query =
-        "UPDATE Jam_Sessions SET gig_date=?, jam_city=?, jam_state=?, genre=?, instruments_needed=?, experience_needed=?, fee=?, title=?, body=? WHERE jam_post_id=?";
-    db.pool.query(query, inserts, (err, result) => {
-        if (err) {
-            res.write(JSON.stringify(err));
-        } else {
-            res.send(result);
-        }
-    });
-});
-
-//displays jam session
-app.get("/displayjamsession", function (req, res) {
-    query = "SELECT * FROM Jam_Sessions";
-    db.pool.query(query, (err, result) => {
-        if (err) throw err;
+    try {
+        const result = await message_controller.updateMessage(inserts);
         res.send(result);
-    });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
+    }
 });
 
-app.get("/displayjamsession/:id", function (req, res) {
-    query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
-    db.pool.query(query, req.params.id, (err, result) => {
-        if (err) throw err;
+//get single message
+router.get("/message/:id", async function (req, res) {
+    try {
+        const result = await message_controller.getMessageById([req.query.id]);
         res.send(result);
-    });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
+    }
 });
 
-//deletes a jam session
-app.delete("/deletejamsession", function (req, res) {
-    console.log(req.body.jam_post_id);
-    query = "DELETE FROM Jam_Sessions WHERE jam_post_id = ?";
-    db.pool.query(query, req.body.jam_post_id, (err, result) => {
-        if (err) {
-            res.write(JSON.stringify(err));
-        } else {
-            res.send(result);
-        }
-    });
+//deletes a message
+router.delete("/message/:id/delete", async function (req, res) {
+    try {
+        const result = await message_controller.deleteMessage([req.query.id]);
+        res.send(result);
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
+    }
 });
-module.exports = app;
+
+// ===================== Routes for Users Regarding Messages ================
+
+//get all messages where the current user is a recipient
+router.get("/user/:id/messages/received", async function (req, res) {
+    try {
+        const result = await message_controller.getMessagesByReceiverId([req.body.id]);
+        res.send(result);
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
+    }
+});
+
+//get all messages where the current user is a sender
+router.get("/user/:id/messages/sent", async function (req, res) {
+    try {
+        const result = await message_controller.getMessagesBySenderId([req.body.id]);
+        res.send(result);
+    } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(JSON.stringify(error));
+    }
+});
+
+module.exports = router;
