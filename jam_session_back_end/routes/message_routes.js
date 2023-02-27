@@ -2,10 +2,10 @@
  * For routes regarding messages
  */
 const express = require("express");
-const app = express.Router();
+const router = express.Router();
 const message_controller = require("../controllers/messages_controllers");
 
-app.use(
+router.use(
     express.urlencoded({
         extended: true,
     })
