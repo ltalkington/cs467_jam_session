@@ -18,10 +18,8 @@ router.post("/message/new", async function (req, res) {
         req.body.receiverID,
         req.body.content
     ];
-
     try {
-        const result = await message_controller.createMessage(inserts);
-        res.send(result);
+        message_controller.createMessage(inserts, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
@@ -33,11 +31,11 @@ router.put("/message/:id/edit", async function (req, res) {
     let inserts = [
         req.body.senderID,
         req.body.receiverID,
-        req.body.content
+        req.body.content,
+        req.params.id
     ];
     try {
-        const result = await message_controller.updateMessage(inserts);
-        res.send(result);
+        message_controller.updateMessage(inserts, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
@@ -47,8 +45,7 @@ router.put("/message/:id/edit", async function (req, res) {
 //get single message
 router.get("/message/:id", async function (req, res) {
     try {
-        const result = await message_controller.getMessageById([req.query.id]);
-        res.send(result);
+        message_controller.getMessageById(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
@@ -58,8 +55,7 @@ router.get("/message/:id", async function (req, res) {
 //deletes a message
 router.delete("/message/:id/delete", async function (req, res) {
     try {
-        const result = await message_controller.deleteMessage([req.query.id]);
-        res.send(result);
+        message_controller.deleteMessage(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
@@ -71,8 +67,7 @@ router.delete("/message/:id/delete", async function (req, res) {
 //get all messages where the current user is a recipient
 router.get("/user/:id/messages/received", async function (req, res) {
     try {
-        const result = await message_controller.getMessagesByReceiverId([req.body.id]);
-        res.send(result);
+        message_controller.getMessagesByReceiverId(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
@@ -82,8 +77,7 @@ router.get("/user/:id/messages/received", async function (req, res) {
 //get all messages where the current user is a sender
 router.get("/user/:id/messages/sent", async function (req, res) {
     try {
-        const result = await message_controller.getMessagesBySenderId([req.body.id]);
-        res.send(result);
+        message_controller.getMessagesBySenderId(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));

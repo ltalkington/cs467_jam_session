@@ -1,44 +1,57 @@
 const db = require("./db");
 
-async function getMessagesByReceiverId(message_id) {
-    inserts = [message_id];
-    query = "SELECT * FROM Messages WHERE receiverID= ?";
-    return db.pool.query(query, inserts);
+async function getMessagesByReceiverId(message_id, res) {
+    const inserts = [message_id];
+    const query = "SELECT * FROM Messages WHERE receiverID= ?;";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
 }
 
-async function getMessagesBySenderId(message_id) {
-    inserts = [message_id];
-    query = "SELECT * FROM Messages WHERE senderID= ?";
-    return db.pool.query(query, inserts);
+async function getMessagesBySenderId(message_id, res) {
+    const inserts = [message_id];
+    const query = "SELECT * FROM Messages WHERE senderID= ?;";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
 }
 
-async function getMessageByMessageId(message_id) {
-    inserts = [message_id];
-    query = "SELECT * FROM Messages WHERE messageID= ?";
-    return db.pool.query(query, inserts);
+async function getMessageById(message_id, res) {
+    const inserts = [message_id];
+    const query = "SELECT * FROM Messages WHERE messageID= ?;";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
 }
 
-async function createMessage(inserts) {
-    sql =
-        "INSERT INTO Messages (senderID, receiverID, content) VALUES (?,?,?)";
-    return db.pool.query(sql, inserts);
+async function createMessage(inserts, res) {
+    const query =
+        "INSERT INTO Messages (senderID, receiverID, content) VALUES (?,?,?);";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
 }
 
-async function updateMessage(inserts) {
-    query =
-        "UPDATE Messages SET senderID=?, receiverID=?, content=? WHERE messageID=?";
-    return db.pool.query(query, inserts);
+async function updateMessage(inserts, res) {
+    const query =
+        "UPDATE Messages SET senderID=?, receiverID=?, content=? WHERE messageID=?;";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
+
 }
 
-async function deleteMessage(inserts) {
-    query = "DELETE FROM Messages WHERE messageID = ?";
-    return db.pool.query(query, inserts);
+async function deleteMessage(inserts, res) {
+    const query = "DELETE FROM Messages WHERE messageID = ?;";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
 }
 
 module.exports = {
     getMessagesByReceiverId,
     getMessagesBySenderId,
-    getMessageByMessageId,
+    getMessageById,
     createMessage,
     updateMessage,
     deleteMessage,

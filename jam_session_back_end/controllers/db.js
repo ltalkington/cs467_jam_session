@@ -6,4 +6,16 @@ var pool = mysql.createPool({
   password: "JamSession2023",
   database: "jam_session",
 });
-module.exports.pool = pool;
+
+const returnCallback = (error, results, fields, res) => {
+  if (error) {
+    throw error;
+  } else {
+    res.status(200).send(results);
+    return;
+  }
+}
+module.exports = {
+  pool,
+  returnCallback
+};
