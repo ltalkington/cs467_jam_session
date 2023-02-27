@@ -1,10 +1,5 @@
 const db = require("./db");
 
-async function getMessages() {
-    query = "SELECT * FROM Messages";
-    return db.pool.query(query);
-}
-
 async function getMessageByReceiverId(jam_session_id) {
     inserts = [jam_session_id];
     query = "SELECT * FROM Messages WHERE receiverID= ?";
