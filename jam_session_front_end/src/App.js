@@ -14,6 +14,8 @@ import Profile from "./Pages/Application/Profile";
 import SearchResults from "./Pages/Application/SearchResults.js";
 import Settings from "./Pages/Application/Settings.js";
 import Timeline from "./Pages/Application/Timeline.js";
+import YourJamSessions from "./Pages/Application/YourJamSessions.js";
+import UpdateJamSession from "./Pages/Application/CRUD/Jam_Session/UpdateJamSession.js";
 
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -61,10 +63,21 @@ function App() {
             element={<AuthenticationGuard component={JamSession} />}
           />
           <Route
+            path="/yourjamsessions"
+            exact
+            element={<AuthenticationGuard component={YourJamSessions} />}
+          />
+          <Route
             path="/createjamsession"
             exact
             element={<AuthenticationGuard component={CreateJamSession} />}
           />
+          <Route
+            path="/updatejamsession"
+            exact
+            element={<AuthenticationGuard component={UpdateJamSession} />}
+          />
+
           <Route
             path="/messages"
             exact

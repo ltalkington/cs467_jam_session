@@ -6,12 +6,15 @@ content-type: application/json
 
 {
     "userId": 1,
-    "gigDate": "01-01-2023 00:03:44",
-    "location": "New York",
-    "genre": "hard rock",
-    "instrumentsNeeded": "guitar",
-    "experienceNeeded": "advanced",
-    "fee": 300
+    "gigDate": "05-09-2023 00:03:44",
+    "jam_city": "Miami",
+    "jam_state": "Florida",
+    "genre": "Soul",
+    "instrumentsNeeded": "Piano",
+    "experienceNeeded": "Intermediate",
+    "fee": 90,
+    "title": "Super Soulful Piano Needed",
+    "body": "Need a piano player that can play some funky stuff"
 }
 
 ###
@@ -36,5 +39,5 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:8000/deletejamsession/3 HTTP/1.1
+DELETE http://localhost:8000/deletejamsession/18 HTTP/1.1
 content-type: application/json
