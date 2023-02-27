@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // Import our routes
 const jam_session_routes = require("./routes/jam_sessions_routes");
-const message_routes = require("./routes/messages_routes");
+const message_routes = require("./routes/message_routes");
 
 
 app.use(express.static(__dirname + "/public")); // If we have anything that needs to go in a public directory.
