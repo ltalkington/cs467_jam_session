@@ -19,4 +19,3 @@ module.exports = {
   pool,
   returnCallback
 };
-
