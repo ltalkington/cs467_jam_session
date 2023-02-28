@@ -3,7 +3,7 @@
  */
 const express = require("express");
 const router = express.Router();
-const review_controller = require("../controllers/reviews_controllers");
+const review_controller = require("../controllers/review_controllers");
 
 router.use(
     express.urlencoded({
