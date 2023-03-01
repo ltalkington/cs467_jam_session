@@ -1,58 +1,51 @@
 const db = require("./db");
 
-async function getMessagesByReceiverId(message_id, res) {
-    const inserts = [message_id];
-    const query = "SELECT * FROM Messages WHERE receiverID= ?;";
+async function getMediaByUserId(media_id, res) {
+    const inserts = [media_id];
+    const query = "SELECT * FROM Media WHERE user_id= ?;";
     await db.pool.query(query, inserts, function (error, results, fields) {
         return db.returnCallback(error, results, fields, res);
     });
 }
 
-async function getMessagesBySenderId(message_id, res) {
-    const inserts = [message_id];
-    const query = "SELECT * FROM Messages WHERE senderID= ?;";
+async function getMediaById(media_id, res) {
+    const inserts = [media_id];
+    const query = "SELECT * FROM Media WHERE media_id= ?;";
     await db.pool.query(query, inserts, function (error, results, fields) {
         return db.returnCallback(error, results, fields, res);
     });
 }
 
-async function getMessageById(message_id, res) {
-    const inserts = [message_id];
-    const query = "SELECT * FROM Messages WHERE messageID= ?;";
-    await db.pool.query(query, inserts, function (error, results, fields) {
-        return db.returnCallback(error, results, fields, res);
-    });
-}
-
-async function createMessage(inserts, res) {
+async function createMedia(inserts, res) {
+    const uploadDate = new Date(Date.now);
+    inserts.append(uploadDate);
     const query =
-        "INSERT INTO Messages (senderID, receiverID, content) VALUES (?,?,?);";
+        "INSERT INTO Media (media_file, user_id, recorded_date, title, description, upload_date) VALUES (?,?,?,?,?,?);";
     await db.pool.query(query, inserts, function (error, results, fields) {
         return db.returnCallback(error, results, fields, res);
     });
 }
 
-async function updateMessage(inserts, res) {
+async function updateMedia(inserts, res) {
     const query =
-        "UPDATE Messages SET senderID=?, receiverID=?, content=? WHERE messageID=?;";
+        "UPDATE Media SET media_file=?, user_id=?, recorded_date=?, title=?, description=? WHERE media_id=?;";
     await db.pool.query(query, inserts, function (error, results, fields) {
         return db.returnCallback(error, results, fields, res);
     });
 
 }
 
-async function deleteMessage(inserts, res) {
-    const query = "DELETE FROM Messages WHERE messageID = ?;";
+async function deleteMedia(inserts, res) {
+    const query = "DELETE FROM Media WHERE media_id = ?;";
     await db.pool.query(query, inserts, function (error, results, fields) {
         return db.returnCallback(error, results, fields, res);
     });
 }
 
 module.exports = {
-    getMessagesByReceiverId,
-    getMessagesBySenderId,
-    getMessageById,
-    createMessage,
-    updateMessage,
-    deleteMessage,
+    getMediaByUserId,
+    getMediaById,
+    createMedia,
+    updateMedia,
+    deleteMedia,
 };
