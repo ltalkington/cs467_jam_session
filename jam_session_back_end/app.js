@@ -10,6 +10,9 @@ const jam_session_routes = require("./routes/jam_sessions_routes");
 const message_routes = require("./routes/message_routes");
 
 
+const media_routes = require("./routes/media_routes");
+
+
 app.use(express.static(__dirname + "/public")); // If we have anything that needs to go in a public directory.
 
 /**
@@ -18,6 +21,9 @@ app.use(express.static(__dirname + "/public")); // If we have anything that need
 
 app.use(jam_session_routes);
 app.use(message_routes);
+
+
+app.use(media_routes);
 
 app.listen(PORT, function () {
   // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
