@@ -18,14 +18,14 @@ async function getMediaById(media_id, res) {
 
 async function getMedia(res) {
     const query = "SELECT * FROM Media;";
-    await db.pool.query(query, inserts, function (error, results, fields) {
+    await db.pool.query(query, function (error, results, fields) {
         return db.returnCallback(error, results, fields, res);
     });
 }
 
 async function createMedia(inserts, res) {
-    const uploadDate = new Date(Date.now);
-    inserts.append(uploadDate);
+    const uploadDate = new Date(Date.now());
+    inserts.push(uploadDate);
     const query =
         "INSERT INTO Media (media_file, user_id, recorded_date, title, description, upload_date) VALUES (?,?,?,?,?,?);";
     await db.pool.query(query, inserts, function (error, results, fields) {

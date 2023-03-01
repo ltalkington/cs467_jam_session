@@ -3,7 +3,7 @@
  */
 const express = require("express");
 const router = express.Router();
-const media_controller = require("../controllers/medias_controllers");
+const media_controller = require("../controllers/media_controllers");
 
 router.use(
     express.urlencoded({
@@ -57,7 +57,7 @@ router.get("/media/:id", async function (req, res) {
 });
 
 //get all media
-router.get("/media/", async function (req, res) {
+router.get("/media", async function (req, res) {
     try {
         media_controller.getMedia(res);
     } catch (error) {
