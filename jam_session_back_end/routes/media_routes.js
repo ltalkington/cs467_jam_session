@@ -1,9 +1,9 @@
 /**
- * For routes regarding messages
+ * For routes regarding medias
  */
 const express = require("express");
 const router = express.Router();
-const message_controller = require("../controllers/messages_controllers");
+const media_controller = require("../controllers/medias_controllers");
 
 router.use(
     express.urlencoded({
@@ -11,77 +11,82 @@ router.use(
     })
 );
 
-//creates a message
-router.post("/message/new", async function (req, res) {
+//creates a media
+router.post("/media/new", async function (req, res) {
     let inserts = [
-        req.body.senderID,
-        req.body.receiverID,
-        req.body.content
+        req.body.media_file,
+        req.body.user_id,
+        req.body.recorded_date,
+        req.body.title,
+        req.body.description,
     ];
     try {
-        message_controller.createMessage(inserts, res);
+        media_controller.createMedia(inserts, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
     }
 });
 
-// updates message
-router.put("/message/:id/edit", async function (req, res) {
+// updates media
+router.put("/media/:id/edit", async function (req, res) {
     let inserts = [
-        req.body.senderID,
-        req.body.receiverID,
-        req.body.content,
+        req.body.media_file,
+        req.body.user_id,
+        req.body.recorded_date,
+        req.body.title,
+        req.body.description,
         req.params.id
     ];
     try {
-        message_controller.updateMessage(inserts, res);
+        media_controller.updateMedia(inserts, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
     }
 });
 
-//get single message
-router.get("/message/:id", async function (req, res) {
+//get single media
+router.get("/media/:id", async function (req, res) {
     try {
-        message_controller.getMessageById(req.params.id, res);
+        media_controller.getMediaById(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
     }
 });
 
-//deletes a message
-router.delete("/message/:id/delete", async function (req, res) {
+//get all media
+router.get("/media/", async function (req, res) {
     try {
-        message_controller.deleteMessage(req.params.id, res);
+        media_controller.getMedia(res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
     }
 });
 
-// ===================== Routes for Users Regarding Messages ================
-
-//get all messages where the current user is a recipient
-router.get("/user/:id/messages/received", async function (req, res) {
+//deletes a media entry
+router.delete("/media/:id/delete", async function (req, res) {
     try {
-        message_controller.getMessagesByReceiverId(req.params.id, res);
+        media_controller.deleteMedia(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
     }
 });
 
-//get all messages where the current user is a sender
-router.get("/user/:id/messages/sent", async function (req, res) {
+// ===================== Routes for Users Regarding Media ================
+
+//get all media for a user
+router.get("/user/:id/media", async function (req, res) {
     try {
-        message_controller.getMessagesBySenderId(req.params.id, res);
+        media_controller.getMediaByUserId(req.params.id, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
     }
 });
+
 
 module.exports = router;

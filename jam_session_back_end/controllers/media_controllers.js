@@ -16,6 +16,13 @@ async function getMediaById(media_id, res) {
     });
 }
 
+async function getMedia(res) {
+    const query = "SELECT * FROM Media;";
+    await db.pool.query(query, inserts, function (error, results, fields) {
+        return db.returnCallback(error, results, fields, res);
+    });
+}
+
 async function createMedia(inserts, res) {
     const uploadDate = new Date(Date.now);
     inserts.append(uploadDate);
@@ -45,6 +52,7 @@ async function deleteMedia(inserts, res) {
 module.exports = {
     getMediaByUserId,
     getMediaById,
+    getMedia,
     createMedia,
     updateMedia,
     deleteMedia,
