@@ -12,6 +12,8 @@ const review_routes = require("./routes/review_routes");
 
 const media_routes = require("./routes/media_routes");
 
+const post_routes = require("./routes/post_routes");
+
 
 app.use(express.static(__dirname + "/public")); // If we have anything that needs to go in a public directory.
 
@@ -25,6 +27,8 @@ app.use(review_routes);
 
 
 app.use(media_routes);
+
+app.use(post_routes);
 
 app.listen(PORT, function () {
   // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
