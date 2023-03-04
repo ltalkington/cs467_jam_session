@@ -34,7 +34,7 @@ function YourJamSessions() {
 
   const loadJamSessions = async () => {
     const response = await fetch(
-      "http://localhost:8000/displayjamsession/" + user_id
+      "http://localhost:8000/user/" + user_id + "/jamsession/"
     );
     const jams = await response.json();
     setJamSessions(jams);

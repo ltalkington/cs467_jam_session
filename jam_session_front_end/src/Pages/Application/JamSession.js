@@ -42,7 +42,7 @@ function JamSession() {
   ];
 
   const loadJamSessions = async () => {
-    const response = await fetch("http://localhost:8000/displayjamsession");
+    const response = await fetch("http://localhost:8000/jamsession");
     const jams = await response.json();
     setJamSessions(jams);
   };

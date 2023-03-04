@@ -6,8 +6,15 @@ import Navbar from "react-bootstrap/Navbar";
 import LoginButton from "../../Components/Authenticate/LoginButton";
 import SignupButton from "../Authenticate/SignupButton";
 import LogoutButton from "../Authenticate/LogoutButton";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
-function CollapsibleExample() {
+function NavBar() {
+  const navigate = useNavigate();
+
+  const travel = () => {
+    navigate("/timeline");
+  };
   const handlePricingClickScroll = () => {
     const element = document.getElementById("pricing");
     if (element) {
@@ -40,11 +47,19 @@ function CollapsibleExample() {
             <Nav>
               <LoginButton text="Log In" />
               <br />
-              <SignupButton id="register-button" text="Register" variant="outline-success" />
+              <SignupButton
+                id="register-button"
+                text="Register"
+                variant="outline-success"
+              />
             </Nav>
           )}
           {isAuthenticated && (
             <Nav>
+              <Button id="landing-button-left" onClick={travel}>
+                {" "}
+                Go To App
+              </Button>
               <LogoutButton text="Log Out" />
             </Nav>
           )}
@@ -54,4 +69,4 @@ function CollapsibleExample() {
   );
 }
 
-export default CollapsibleExample;
+export default NavBar;

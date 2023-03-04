@@ -56,7 +56,7 @@ function CreateJamSession() {
         body: body,
       };
 
-      const response = await fetch("http://localhost:8000/createjamsession", {
+      const response = await fetch("http://localhost:8000/jamsession/new", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {

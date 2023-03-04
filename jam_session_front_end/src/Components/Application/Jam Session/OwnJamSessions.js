@@ -27,18 +27,21 @@ export default function OwnJamSessions({ jamSessions, key, loadJamSessions }) {
       jam_post_id: jamSessions.jam_post_id,
     };
 
-    const response = await fetch("http://localhost:8000/deletejamsession", {
-      method: "DELETE",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "http://localhost:8000/jamsession/" + jamSessions.jam_post_id + "/delete",
+      {
+        method: "DELETE",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.status === 200 || response.status === 201) {
-      alert("Successfully deleted the Room!");
+      alert("Successfully deleted the Post!");
       loadJamSessions();
     } else {
-      alert(`Failed to delete the room, status code = ${response.status}`);
+      alert(`Failed to delete the Post, status code = ${response.status}`);
       loadJamSessions();
     }
   };
