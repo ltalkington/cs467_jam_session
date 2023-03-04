@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import JamSessions from "../../../../Components/Application/Jam Session/JamSessions.js";
 
 function UpdateJamSession() {
   const location = useLocation();
@@ -32,8 +33,8 @@ function UpdateJamSession() {
 
     let data = {
       gigDate: gigDate,
-      city: city,
-      state: state,
+      jam_city: city,
+      jam_state: state,
       genre: genre,
       instrumentsNeeded: instrumentsNeeded,
       experienceNeeded: experienceNeeded,
@@ -43,13 +44,16 @@ function UpdateJamSession() {
       post_jam_id: location.state.id,
     };
 
-    const response = await fetch("http://localhost:8000/updatejamsession", {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "http://localhost:8000/jamsession/" + location.state.id + "/edit",
+      {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.status === 200 || response.status === 201) {
       alert("Successfully updated the Jam Session!");
       navigate("/yourjamsessions");

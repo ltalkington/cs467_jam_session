@@ -16,8 +16,8 @@ router.post("/jamsession/new", function (req, res) {
     req.body.userId,
     new Date(),
     new Date(req.body.gigDate),
-    req.body.city,
-    req.body.state,
+    req.body.jam_city,
+    req.body.jam_state,
     req.body.genre,
     req.body.instrumentsNeeded,
     req.body.experienceNeeded,
@@ -38,8 +38,8 @@ router.post("/jamsession/new", function (req, res) {
 router.put("/jamsession/:id/edit", function (req, res) {
   let inserts = [
     req.body.gigDate,
-    req.body.city,
-    req.body.state,
+    req.body.jam_city,
+    req.body.jam_state,
     req.body.genre,
     req.body.instrumentsNeeded,
     req.body.experienceNeeded,

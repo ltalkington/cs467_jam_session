@@ -16,13 +16,19 @@ import Footer from "../../Components/Landing/Footer.js";
 import LoginButton from "../../Components/Authenticate/LoginButton";
 import LogoutButton from "../../Components/Authenticate/LogoutButton";
 import SignupButton from "../../Components/Authenticate/SignupButton";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
   const { isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
+
+  const travel = () => {
+    navigate("/timeline");
+  };
 
   return (
     <>
-      <NavBar/>
+      <NavBar />
       <div>
         <Container>
           <Row className="align-items-center">
@@ -38,9 +44,9 @@ function LandingPage() {
               </p>
 
               {!isAuthenticated && (
-                  <>
-                    <LoginButton id="landing-button-left" text="Log In"/>
-                    <SignupButton
+                <>
+                  <LoginButton id="landing-button-left" text="Log In" />
+                  <SignupButton
                     tag="a"
                     color="primary"
                     id="landing-button-right"
@@ -48,13 +54,17 @@ function LandingPage() {
                     variant="outline-success"
                     wideMobile
                     href="#"
-                    />
-                  </>
-                )}
+                  />
+                </>
+              )}
               {isAuthenticated && (
-                  <>
-                    <LogoutButton text="Log Out"/>
-                  </>
+                <>
+                  <Button id="landing-button-left" onClick={travel}>
+                    {" "}
+                    Go To App
+                  </Button>
+                  <LogoutButton text="Log Out" />
+                </>
               )}
             </Col>
             <Col>
