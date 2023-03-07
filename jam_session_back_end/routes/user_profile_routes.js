@@ -7,12 +7,13 @@ const profile_controller = require("../controllers/user_profiles_controllers");
 
 router.use(express.urlencoded({extended: true}));
 
-const path = "/user_profile";
+const path = "/user_profiles";
 
 // Create new profile
 router.post(path, async function (req, res) {
     let inserts = [
-        req.body.user_id,
+        req.body.auth_id,
+        req.body.display_name,
         req.body.user_photo_link,
         req.body.location,
         req.body.instruments,
