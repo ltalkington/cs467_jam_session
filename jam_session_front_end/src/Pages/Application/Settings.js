@@ -36,13 +36,10 @@ function Settings() {
           <Box sx={{ width: "40%" }}>
             <Stack spacing={1} sx={{ justifyContent: "space-between" }}>
               <Item>
-                Setting Number 1 <Switch />
+                Do you want to have alerts? <Switch />
               </Item>
               <Item>
-                Setting Number 2 <Switch />
-              </Item>
-              <Item>
-                Setting Number 3 <Switch />
+                Sign up for emails? <Switch />
               </Item>
             </Stack>
           </Box>
