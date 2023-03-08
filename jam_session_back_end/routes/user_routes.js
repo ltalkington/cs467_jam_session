@@ -9,17 +9,18 @@ router.use(
     express.urlencoded({extended: true})
 );
 
-const path = "/user";
+const path = "/users";
 
 // Create new user
 router.post(path, async function (req, res) {
-    let inserts = [
+    let user_inserts = [
+        req.body.auth_id,
         req.body.name,
         req.body.profile_link,
         req.body.email_address,
     ];
     try {
-        await user_controller.createUser(inserts, res);
+        await user_controller.createUser(user_inserts, res);
     } catch (error) {
         console.log(JSON.stringify(error));
         res.status(400).send(JSON.stringify(error));
