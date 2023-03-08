@@ -10,7 +10,8 @@ const jam_session_routes = require("./routes/jam_sessions_routes");
 const message_routes = require("./routes/message_routes");
 const review_routes = require("./routes/review_routes");
 const media_routes = require("./routes/media_routes");
-const post_routes = require("./routes/post_routes");
+const post_routes = require("./routes/text_post_routes");
+const video_post_routes = require("./routes/video_post_routes");
 const user_routes = require("./routes/user_routes");
 const profile_routes = require("./routes/user_profile_routes");
 
@@ -27,12 +28,13 @@ app.use(media_routes);
 app.use(post_routes);
 app.use(user_routes);
 app.use(profile_routes);
+app.use(video_post_routes);
 
 app.listen(PORT, function () {
   // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
   console.log(
     "Express started on http://localhost:" +
-    PORT +
-    "; press Ctrl-C to terminate."
+      PORT +
+      "; press Ctrl-C to terminate."
   );
 });

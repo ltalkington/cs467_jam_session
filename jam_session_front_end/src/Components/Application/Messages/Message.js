@@ -5,22 +5,19 @@ import CardGroup from "react-bootstrap/CardGroup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 
-function Message() {
+function Message({ postInfo }) {
   return (
     <CardGroup id="override-app">
       <Card className="text-post-card" style={{ marginLeft: 100 }}>
-        <Card.Header as="h5">Mike Random</Card.Header>
+        <Card.Header as="h5">{postInfo.senderID}</Card.Header>
 
         <Card.Body style={{ width: 1000 }}>
           <Avatar alt="MR" src="/static/images/avatar/1.jpg" />
 
-          <Card.Text style={{ fontSize: 20 }}>
-            {" "}
-            Had a great time at the jazz meetup, do you want to join my band?
-          </Card.Text>
+          <Card.Text style={{ fontSize: 20 }}> {postInfo.content} </Card.Text>
         </Card.Body>
         <Card.Footer style={{ fontSize: 15 }}>
-          <small className="text-muted">Last updated 3 mins ago</small>
+          <small className="text-muted">{postInfo.created_at}</small>
           <span className="text-right">
             <Button variant="contained">Reply</Button>
           </span>

@@ -15,9 +15,12 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import concert1 from "../../../Assets/concert1.jpg";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
+
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
@@ -27,11 +30,36 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function VideoPost({ postInfo }) {
+export default function VideoPost({ postInfo, loadVideoPosts }) {
+  const navigate = useNavigate();
+
   const [expanded, setExpanded] = React.useState(false);
-  console.log(postInfo.Video_Post_id);
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+  const deleteButton = async (e) => {
+    // On submit of the form, send a DELETE request with the ID to the server.
+    let data = {
+      Text_Post_id: postInfo.Video_Post_id,
+    };
+
+    const response = await fetch(
+      "http://localhost:8000/videopost/" + postInfo.Video_Post_id + "/delete",
+      {
+        method: "DELETE",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 200 || response.status === 201) {
+      alert("Successfully deleted the Post!");
+      loadVideoPosts();
+    } else {
+      alert(`Failed to delete the Post, status code = ${response.status}`);
+      loadVideoPosts();
+    }
   };
 
   return (
@@ -62,12 +90,30 @@ export default function VideoPost({ postInfo }) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="Rock">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+        <Button
+          size="small"
+          onClick={() => {
+            navigate("/updatevideopost", {
+              state: {
+                id: postInfo.Video_Post_id,
+                body: postInfo.post_body,
+                post_date: postInfo.post_date,
+                user_id: postInfo.user_id,
+                post_likes: postInfo.post_likes,
+              },
+            });
+          }}
+        >
+          Update
+        </Button>
+        <Button
+          size="small"
+          onClick={() => {
+            deleteButton(postInfo);
+          }}
+        >
+          Delete
+        </Button>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

@@ -20,6 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const drawerWidth = 240;
 
@@ -29,6 +30,15 @@ function ResponsiveDrawer(props) {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+  const { logout } = useAuth0();
+
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   };
 
   const drawer = (
@@ -103,7 +113,7 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button key="Log Out" component={Link} to="/logout">
+        <ListItem button key="Log Out" onClick={handleLogout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

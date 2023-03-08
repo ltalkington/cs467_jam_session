@@ -34,7 +34,7 @@ router.post("/jamsession/new", function (req, res) {
   }
 });
 
-// updates rooms
+// updates jam sessions
 router.put("/jamsession/:id/edit", function (req, res) {
   let inserts = [
     req.body.gigDate,
@@ -66,7 +66,7 @@ router.get("/jamsession", function (req, res) {
   }
 });
 
-// get single jam session by id
+// get single jam session by user id
 router.get("/jamsession/:id", function (req, res) {
   query = "SELECT * FROM Jam_Sessions WHERE user_id = ?";
   try {
