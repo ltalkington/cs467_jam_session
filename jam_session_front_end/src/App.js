@@ -21,6 +21,7 @@ import CreateVideoPost from "./Pages/Application/CRUD/Timeline/CreateVideoPost.j
 import UpdateVideoPost from "./Pages/Application/CRUD/YourPosts/UpdateYourVideoPost.js";
 import CreateMessages from "./Pages/Application/CRUD/Messages/CreateMessage.js";
 import UpdateTextPost from "./Pages/Application/CRUD/YourPosts/UpdateYourPosts.js";
+import UpdateUserProfile from "./Pages/Application/CRUD/Profile/UpdateProfile";
 
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -61,6 +62,11 @@ function App() {
             path="/profile"
             exact
             element={<AuthenticationGuard component={Profile} />}
+          />
+          <Route
+              path="/updateprofile"
+              exact
+              element={<AuthenticationGuard component={UpdateUserProfile} />}
           />
           <Route
             path="/timeline"
