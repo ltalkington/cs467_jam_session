@@ -329,8 +329,9 @@ async function getOrMakeProfile(user) {
         method: "GET",
       }
     );
-    profile = JSON.decode(response.body);
+    profile = JSON.parse(response.body);
   } catch (error) {
+    console.log("user", user)
     let profile_inserts = {
       user_id: user.sub,
       display_name: user.name,
@@ -352,14 +353,19 @@ async function getOrMakeProfile(user) {
         body: JSON.stringify(profile_inserts),
       }
     );
-    profile = JSON.decode(response.body);
+    profile = JSON.parse(response.body);
   }
   return profile;
 }
 
 // Use to split strings of instruments, experience, genres, etc.
 function makeStringList(string, delimiter) {
-  return string.split(delimiter);
+  try {
+    return string.split(delimiter);
+  } catch (err) {
+    return ""
+  }
+
 }
 
 function displayListItems(list) {
