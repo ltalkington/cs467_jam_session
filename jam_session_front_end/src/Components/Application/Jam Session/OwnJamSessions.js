@@ -26,7 +26,7 @@ export default function OwnJamSessions({ jamSessions, key, loadJamSessions }) {
     };
 
     const response = await fetch(
-      "http://localhost:8000/jamsession/" + jamSessions.jam_post_id + "/delete",
+      process.env.REACT_APP_API_SERVER_URL + "/jamsession/" + jamSessions.jam_post_id + "/delete",
       {
         method: "DELETE",
         body: JSON.stringify(data),

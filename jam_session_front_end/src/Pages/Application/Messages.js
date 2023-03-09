@@ -38,7 +38,7 @@ function Messages() {
     console.log(messages);
     var user_id = 1;
     const response = await fetch(
-      "http://localhost:8000/user/" + user_id + "/messages/received"
+      process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/messages/received"
     );
     const message = await response.json();
     setMessages(message);

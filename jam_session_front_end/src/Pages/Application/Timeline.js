@@ -39,7 +39,7 @@ function Timeline() {
   const [videoPosts, setVideoPosts] = useState();
 
   const loadTextPosts = async () => {
-    const response = await fetch("http://localhost:8000/textpost");
+    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/textpost");
     const posts = await response.json();
     console.log(posts);
     setTextPosts(posts);
@@ -49,7 +49,7 @@ function Timeline() {
   }, []);
 
   const loadVideoPosts = async () => {
-    const response = await fetch("http://localhost:8000/videopost");
+    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/videopost");
     const posts = await response.json();
     console.log(posts);
     setVideoPosts(posts);
@@ -74,7 +74,7 @@ function Timeline() {
   ];
   useEffect(() => {
     Component(tabber);
-    return () => {};
+    return () => { };
   }, []);
   const Component = (tabber) => {
     let x = tabber;

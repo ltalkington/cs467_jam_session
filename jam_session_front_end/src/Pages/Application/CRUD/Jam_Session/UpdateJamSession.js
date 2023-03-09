@@ -45,7 +45,7 @@ function UpdateJamSession() {
     };
 
     const response = await fetch(
-      "http://localhost:8000/jamsession/" + location.state.id + "/edit",
+      process.env.REACT_APP_API_SERVER_URL + "/jamsession/" + location.state.id + "/edit",
       {
         method: "PUT",
         body: JSON.stringify(data),

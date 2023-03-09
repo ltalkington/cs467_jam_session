@@ -39,7 +39,7 @@ function UpdateUserProfile({ route }) {
         };
 
         const response = await fetch(
-            `process.env.REACT_APP_API_SERVER_URL/user_profiles/${profile.user_id}`,
+            `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${profile.user_id}`,
             {
                 method: "PUT",
                 body: JSON.stringify(data),
