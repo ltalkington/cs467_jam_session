@@ -1,33 +1,42 @@
 import ResponsiveDrawer from "../../Components/Application/Sidebar/Sidebar.js";
 import OwnTextPosts from "../../Components/Application/YourPosts/OwnTextPosts.js";
 import OwnVideoPosts from "../../Components/Application/YourPosts/OwnVideoPosts.js";
-
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tabber from "../../Components/Application/Timeline/Tabber.js";
-
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect } from "react";
 
 function Posts() {
   const [textPosts, setTextPosts] = useState();
   const [tabber, setTabber] = useState(0);
   const [videoPosts, setVideoPosts] = useState();
+  const { user } = useAuth0();
 
   const loadTextPosts = async () => {
-    var stuffid = 1;
-    const response = await fetch("http://localhost:8000/textpost/" + stuffid);
-    const posts = await response.json();
-    setTextPosts(posts);
+    const auth_id = user.sub.split("|")[1];
+
+    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const posts = await userresponse.json();
+    var user_id = posts[0].user_id;
+    console.log(user_id);
+    const response = await fetch("http://localhost:8000/textpost/" + user_id);
+    const userPosts = await response.json();
+    setTextPosts(userPosts);
   };
   useEffect(() => {
     loadTextPosts();
   }, []);
 
   const loadVideoPosts = async () => {
-    var stuffid = 1;
-    const response = await fetch("http://localhost:8000/videopost/" + stuffid);
-    const posts = await response.json();
-    setVideoPosts(posts);
+    const auth_id = user.sub.split("|")[1];
+
+    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const posts = await userresponse.json();
+    var user_id = posts[0].user_id;
+    const response = await fetch("http://localhost:8000/videopost/" + user_id);
+    const userPosts = await response.json();
+    setVideoPosts(userPosts);
   };
   useEffect(() => {
     loadVideoPosts();

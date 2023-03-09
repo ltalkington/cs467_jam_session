@@ -38,7 +38,6 @@ router.put("/videopost/:Video_Post_id/edit", async function (req, res) {
     req.body.video_file_location,
     req.params.Video_Post_id,
   ];
-  console.log(inserts);
   try {
     post_controller.updatePost(inserts, res);
   } catch (error) {
@@ -61,7 +60,6 @@ router.get("/videopost/:id", async function (req, res) {
 router.get("/videopost", async function (req, res) {
   try {
     post_controller.getPosts(res);
-    console.log(res);
   } catch (error) {
     console.log(JSON.stringify(error));
     res.status(400).send(JSON.stringify(error));

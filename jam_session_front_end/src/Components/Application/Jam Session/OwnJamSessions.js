@@ -12,14 +12,12 @@ import Box from "@mui/material/Box";
 import { useAuth0 } from "@auth0/auth0-react";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import "./JamSession.css";
 
 export default function OwnJamSessions({ jamSessions, key, loadJamSessions }) {
-  const { user } = useAuth0();
   const navigate = useNavigate();
-
-  console.log(jamSessions, key, user.email, jamSessions.user_id);
 
   const deleteButton = async (e) => {
     // On submit of the form, send a DELETE request with the ID to the server.

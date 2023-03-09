@@ -21,9 +21,9 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import SpeedIcon from "@mui/icons-material/Speed";
 import Stack from "@mui/material/Stack";
 import StarsIcon from "@mui/icons-material/Stars";
-import EditIcon from "@mui/icons-material/Edit"
+import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
-import {styled} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import FolderIcon from "@mui/icons-material/Folder";
 
@@ -49,9 +49,11 @@ function Profile() {
 
   const actions = [
     {
-      icon: <EditIcon onClick={() => navigate("/updateprofile", userProfile)} />,
+      icon: (
+        <EditIcon onClick={() => navigate("/updateprofile", userProfile)} />
+      ),
       name: "Update User Profile",
-    }
+    },
   ];
 
   useEffect(() => {
@@ -143,7 +145,9 @@ function Profile() {
                       Instruments
                     </Typography>
                     <Typography>
-                      {displayListItems(makeStringList(userProfile.instruments, ", "))}
+                      {displayListItems(
+                        makeStringList(userProfile.instruments, ", ")
+                      )}
                       {/*<List>*/}
                       {/*  <ListItem>*/}
                       {/*    <ListItemText primary="Guitar" />*/}
@@ -170,7 +174,9 @@ function Profile() {
                       Liked Genres
                     </Typography>
                     <Typography>
-                      {displayListItems(makeStringList(userProfile.liked_genres, ", "))}
+                      {displayListItems(
+                        makeStringList(userProfile.liked_genres, ", ")
+                      )}
                       {/*<List>*/}
                       {/*  <ListItem>*/}
                       {/*    <ListItemText primary="Folk" />*/}
@@ -197,7 +203,10 @@ function Profile() {
                       Disliked Genres
                     </Typography>
                     <Typography>
-                      {displayListItems(makeStringList(userProfile.disliked_genres, ", "))}
+                      hello
+                      {displayListItems(
+                        makeStringList(userProfile.disliked_genres, ", ")
+                      )}
                       {/*<List>*/}
                       {/*  <ListItem>*/}
                       {/*    <ListItemText primary="Hip-Hop" />*/}
@@ -234,7 +243,9 @@ function Profile() {
                   <Typography variant="h6" component="div">
                     Availability
                   </Typography>
-                  {displayListItems(makeStringList(userProfile.availability, ", "))}
+                  {displayListItems(
+                    makeStringList(userProfile.availability, ", ")
+                  )}
                   {/*<List>*/}
                   {/*  <ListItem>*/}
                   {/*    <ListItemText primary="10/13/23" />*/}
@@ -291,16 +302,16 @@ function Profile() {
         </Container>
         <Box sx={{ height: 30, mt: 3, flexGrow: 3 }}>
           <StyledSpeedDial
-              ariaLabel="Jam Utilities"
-              sx={{ position: "fixed", bottom: 0, right: "100%" }}
-              icon={<SpeedDialIcon />}
+            ariaLabel="Jam Utilities"
+            sx={{ position: "fixed", bottom: 0, right: "100%" }}
+            icon={<SpeedDialIcon />}
           >
             {actions.map((action) => (
-                <SpeedDialAction
-                    key={action.name}
-                    icon={action.icon}
-                    tooltipTitle={action.name}
-                />
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+              />
             ))}
           </StyledSpeedDial>
         </Box>
@@ -313,10 +324,10 @@ async function getOrMakeProfile(user) {
   let profile;
   try {
     let response = await fetch(
-        `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${user.sub}`,
-        {
-          method: "GET",
-        }
+      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${user.sub}`,
+      {
+        method: "GET",
+      }
     );
     profile = JSON.decode(response.body);
   } catch (error) {
@@ -334,10 +345,13 @@ async function getOrMakeProfile(user) {
       availability: "",
       review_id: "",
     };
-    let response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/user_profiles`, {
-      method: "POST",
-      body: JSON.stringify(profile_inserts),
-    });
+    let response = await fetch(
+      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
+      {
+        method: "POST",
+        body: JSON.stringify(profile_inserts),
+      }
+    );
     profile = JSON.decode(response.body);
   }
   return profile;
@@ -354,11 +368,24 @@ function displayListItems(list) {
   }
   let things;
   if (typeof list[0] === "string") {
-    things = list.map( thing => <ListItem> <ListItemText primary={thing} /> </ListItem> );
+    things = list.map((thing) => (
+      <ListItem>
+        {" "}
+        <ListItemText primary={thing} />{" "}
+      </ListItem>
+    ));
   } else if (typeof list[0] === "object") {
-    things = list.map( thing => <ListItem> <ListItemText primary={thing.star_rating} secondary={thing.comments} /> </ListItem>);
+    things = list.map((thing) => (
+      <ListItem>
+        {" "}
+        <ListItemText
+          primary={thing.star_rating}
+          secondary={thing.comments}
+        />{" "}
+      </ListItem>
+    ));
   }
-  return <List>{things}</List>
+  return <List>{things}</List>;
 }
 
 export default Profile;

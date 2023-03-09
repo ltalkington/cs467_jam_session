@@ -4,9 +4,11 @@ import Grid from "@mui/material/Grid";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 function CreateJamSession() {
+  const { user } = useAuth0();
   const [gigDate, setGigDate] = useState();
   const [jamCity, setJamCity] = useState("Saint Louis");
   const [jamState, setJamState] = useState("Missouri");
@@ -20,7 +22,6 @@ function CreateJamSession() {
 
   const submitButton = async (e) => {
     e.preventDefault();
-    console.log(genre);
     if (
       gigDate === undefined ||
       jamCity === undefined ||
@@ -42,9 +43,14 @@ function CreateJamSession() {
       }
     } else {
       // On submit of the form, send a POST request with the data to the server.
-
+      const auth_id = user.sub.split("|")[1];
+      const userresponse = await fetch(
+        "http://localhost:8000/users/" + auth_id
+      );
+      const posts = await userresponse.json();
+      const userID = await posts[0].user_id;
       let data = {
-        userId: 1,
+        userId: userID,
         gigDate: gigDate,
         jam_city: jamCity,
         jam_state: jamState,
@@ -55,6 +61,8 @@ function CreateJamSession() {
         title: title,
         body: body,
       };
+
+      console.log(userID);
 
       const response = await fetch("http://localhost:8000/jamsession/new", {
         method: "POST",

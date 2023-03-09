@@ -4,12 +4,27 @@ import concert1 from "../../../Assets/concert1.jpg";
 import CardGroup from "react-bootstrap/CardGroup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useState, useEffect } from "react";
 
 function Message({ postInfo }) {
+  const { user } = useAuth0();
+  const [userName, setUserName] = useState();
+
+  const loadUserID = async () => {
+    const userresponse = await fetch(
+      "http://localhost:8000/users/" + postInfo.senderID + "/user_id/"
+    );
+    const posts = await userresponse.json();
+    setUserName(posts[0].name);
+  };
+  useEffect(() => {
+    loadUserID();
+  }, []);
   return (
     <CardGroup id="override-app">
       <Card className="text-post-card" style={{ marginLeft: 100 }}>
-        <Card.Header as="h5">{postInfo.senderID}</Card.Header>
+        <Card.Header as="h5">{userName}</Card.Header>
 
         <Card.Body style={{ width: 1000 }}>
           <Avatar alt="MR" src="/static/images/avatar/1.jpg" />

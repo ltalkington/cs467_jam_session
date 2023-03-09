@@ -5,8 +5,11 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function CreateMessages() {
+  const { user } = useAuth0();
+
   const [body, setBody] = useState("Who wants to play? ");
   const [receiver, setReceiver] = useState("Who to send it to?");
 
@@ -18,7 +21,12 @@ function CreateMessages() {
       alert("invalid entry in body");
     } else {
       // On submit of the form, send a POST request with the data to the server.
-
+      const auth_id = user.sub.split("|")[1];
+      const userresponse = await fetch(
+        "http://localhost:8000/users/" + auth_id
+      );
+      const posts = await userresponse.json();
+      const userID = await posts[0].user_id;
       let data = {
         senderID: 1,
         receiverID: receiver,
