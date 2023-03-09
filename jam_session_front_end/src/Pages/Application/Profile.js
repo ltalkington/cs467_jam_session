@@ -331,7 +331,6 @@ async function getOrMakeProfile(user) {
     );
     profile = JSON.parse(response.body);
   } catch (error) {
-    console.log("user", user)
     let profile_inserts = {
       user_id: user.sub,
       display_name: user.name,
