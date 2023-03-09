@@ -6,10 +6,22 @@ import Avatar from "@mui/material/Avatar";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function OwnTextPosts({ postInfo, loadTextPosts }) {
   const { user } = useAuth0();
   const navigate = useNavigate();
+  const [userName, setUserName] = useState();
+
+  const loadUserID = async () => {
+    const auth_id = user.sub.split("|")[1];
+    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const posts = await userresponse.json();
+    setUserName(posts[0].name);
+  };
+  useEffect(() => {
+    loadUserID();
+  }, []);
 
   const deleteButton = async (e) => {
     // On submit of the form, send a DELETE request with the ID to the server.
@@ -39,7 +51,7 @@ function OwnTextPosts({ postInfo, loadTextPosts }) {
   return (
     <CardGroup id="override-app">
       <Card className="text-post-card" style={{ marginLeft: 100 }}>
-        <Card.Header as="h5">{postInfo.user_id} </Card.Header>
+        <Card.Header as="h5">{userName} </Card.Header>
 
         <Card.Body style={{ width: 1000 }}>
           <Avatar alt="JS" src="/static/images/avatar/1.jpg" />

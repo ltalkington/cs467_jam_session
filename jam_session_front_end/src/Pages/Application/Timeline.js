@@ -14,6 +14,7 @@ import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -29,6 +30,8 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 
 function Timeline() {
   const navigate = useNavigate();
+  const { user } = useAuth0();
+  console.log(user.sub);
 
   let drawerWidth = 240;
   const [tabber, setTabber] = useState(0);

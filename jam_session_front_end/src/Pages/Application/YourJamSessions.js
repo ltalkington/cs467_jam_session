@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -26,13 +28,21 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 }));
 
 function YourJamSessions() {
-  const user_id = 1;
+  const { user } = useAuth0();
+  console.log(user);
+  const [userSub, setUserSub] = useState();
+
   const navigate = useNavigate();
 
   let drawerWidth = 240;
   const [jamSessions, setJamSessions] = useState();
 
   const loadJamSessions = async () => {
+    const auth_id = user.sub.split("|")[1];
+    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const posts = await userresponse.json();
+    var user_id = posts[0].user_id;
+
     const response = await fetch(
       "http://localhost:8000/user/" + user_id + "/jamsession/"
     );

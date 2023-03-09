@@ -10,13 +10,13 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import concert1 from "../../../Assets/concert1.jpg";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useState, useEffect } from "react";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,7 +31,22 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function VideoPost({ postInfo, loadVideoPosts }) {
+  const { user } = useAuth0();
   const navigate = useNavigate();
+  const [user_id, setUserID] = useState();
+  const [userName, setUserName] = useState();
+
+  const loadUserID = async () => {
+    const auth_id = user.sub.split("|")[1];
+    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const posts = await userresponse.json();
+    console.log(posts);
+    setUserName(posts[0].name);
+  };
+  useEffect(() => {
+    loadUserID();
+  }, []);
+  console.log(userName);
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -67,7 +82,7 @@ export default function VideoPost({ postInfo, loadVideoPosts }) {
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="video">
-            JR
+            LT
           </Avatar>
         }
         action={
@@ -75,7 +90,7 @@ export default function VideoPost({ postInfo, loadVideoPosts }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={postInfo.Video_Post_id}
+        title={userName}
         subheader={"Jam Session #" + postInfo.Video_Post_id}
       />
       <CardMedia

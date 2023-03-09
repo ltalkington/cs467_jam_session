@@ -33,14 +33,6 @@ function ResponsiveDrawer(props) {
   };
   const { logout } = useAuth0();
 
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
   const drawer = (
     <div>
       <Typography
@@ -113,7 +105,7 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button key="Log Out" onClick={handleLogout}>
+        <ListItem button key="Log Out" onClick={logout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

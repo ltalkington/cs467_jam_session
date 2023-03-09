@@ -15,6 +15,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import concert1 from "../../../Assets/concert1.jpg";
+import { useState, useEffect } from "react";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -29,25 +30,32 @@ const ExpandMore = styled((props) => {
 
 export default function VideoPost({ postInfo }) {
   const [expanded, setExpanded] = React.useState(false);
-  console.log(postInfo.Video_Post_id);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const [userName, setUserName] = useState();
+
+  const loadUserID = async () => {
+    const userresponse = await fetch(
+      "http://localhost:8000/users/" + postInfo.user_id + "/user_id/"
+    );
+    const posts = await userresponse.json();
+    setUserName(posts[0].name);
+  };
+  useEffect(() => {
+    loadUserID();
+  }, []);
 
   return (
     <Card sx={{ maxWidth: 345, marginLeft: 5, marginBottom: 5 }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="video">
-            JR
-          </Avatar>
-        }
+        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="video"></Avatar>}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={postInfo.Video_Post_id}
+        title={userName}
         subheader={"Jam Session #" + postInfo.Video_Post_id}
       />
       <CardMedia
