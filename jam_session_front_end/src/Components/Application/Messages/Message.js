@@ -13,7 +13,7 @@ function Message({ postInfo }) {
 
   const loadUserID = async () => {
     const userresponse = await fetch(
-      "http://localhost:8000/users/" + postInfo.senderID + "/user_id/"
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + postInfo.senderID + "/user_id/"
     );
     const posts = await userresponse.json();
     setUserName(posts[0].name);

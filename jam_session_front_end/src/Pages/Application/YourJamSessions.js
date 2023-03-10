@@ -39,12 +39,12 @@ function YourJamSessions() {
 
   const loadJamSessions = async () => {
     const auth_id = user.sub.split("|")[1];
-    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const userresponse = await fetch(process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id);
     const posts = await userresponse.json();
     var user_id = posts[0].user_id;
 
     const response = await fetch(
-      "http://localhost:8000/user/" + user_id + "/jamsession/"
+      process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/jamsession/"
     );
     const jams = await response.json();
     setJamSessions(jams);

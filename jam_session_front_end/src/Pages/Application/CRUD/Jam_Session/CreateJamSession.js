@@ -45,7 +45,7 @@ function CreateJamSession() {
       // On submit of the form, send a POST request with the data to the server.
       const auth_id = user.sub.split("|")[1];
       const userresponse = await fetch(
-        "http://localhost:8000/users/" + auth_id
+        process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
       );
       const posts = await userresponse.json();
       const userID = await posts[0].user_id;
@@ -64,7 +64,7 @@ function CreateJamSession() {
 
       console.log(userID);
 
-      const response = await fetch("http://localhost:8000/jamsession/new", {
+      const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/jamsession/new", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {

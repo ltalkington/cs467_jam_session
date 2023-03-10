@@ -28,7 +28,7 @@ function UpdateVideoPost() {
     console.log(data);
 
     const response = await fetch(
-      "http://localhost:8000/videopost/" + location.state.id + "/edit",
+      process.env.REACT_APP_API_SERVER_URL + "/videopost/" + location.state.id + "/edit",
       {
         method: "PUT",
         body: JSON.stringify(data),

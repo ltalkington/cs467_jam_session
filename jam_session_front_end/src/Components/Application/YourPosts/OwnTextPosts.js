@@ -15,7 +15,7 @@ function OwnTextPosts({ postInfo, loadTextPosts }) {
 
   const loadUserID = async () => {
     const auth_id = user.sub.split("|")[1];
-    const userresponse = await fetch("http://localhost:8000/users/" + auth_id);
+    const userresponse = await fetch(process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id);
     const posts = await userresponse.json();
     setUserName(posts[0].name);
   };
@@ -30,7 +30,7 @@ function OwnTextPosts({ postInfo, loadTextPosts }) {
     };
 
     const response = await fetch(
-      "http://localhost:8000/textpost/" + postInfo.Text_Post_id + "/delete",
+      process.env.REACT_APP_API_SERVER_URL + "/textpost/" + postInfo.Text_Post_id + "/delete",
       {
         method: "DELETE",
         body: JSON.stringify(data),

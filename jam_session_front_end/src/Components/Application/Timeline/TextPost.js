@@ -10,7 +10,7 @@ function TextPosts({ postInfo }) {
 
   const loadUserID = async () => {
     const userresponse = await fetch(
-      "http://localhost:8000/users/" + postInfo.user_id + "/user_id/"
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + postInfo.user_id + "/user_id/"
     );
     const posts = await userresponse.json();
     setUserName(posts[0].name);
