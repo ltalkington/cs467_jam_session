@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
@@ -66,6 +67,13 @@ function ResponsiveDrawer(props) {
             <AccountBoxIcon />
           </ListItemIcon>
           <ListItemText primary="Profile" />
+        </ListItem>
+
+        <ListItem button key="Review" component={Link} to="/review">
+          <ListItemIcon>
+            <ReviewsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Review a Musician " />
         </ListItem>
 
         <ListItem button key="YourPost" component={Link} to="/posts">

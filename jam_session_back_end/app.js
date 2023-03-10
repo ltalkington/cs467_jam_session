@@ -1,6 +1,6 @@
 var express = require("express"); // We are using the express library for the web server
 var app = express(); // We need to instantiate an express object to interact with the server in our code
-require('dotenv').config();
+require("dotenv").config();
 var cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,6 +21,7 @@ app.use(express.static(__dirname + "/public")); // If we have anything that need
  * Routes
  */
 
+
 app.use(jam_session_routes);
 app.use(message_routes);
 app.use(review_routes);
@@ -32,7 +33,5 @@ app.use(video_post_routes);
 
 app.listen(process.env.PORT, function () {
   // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
-  console.log(
-    "Jam Session backend now running on port " + process.env.PORT
-  );
+  console.log("Jam Session backend now running on port " + process.env.PORT);
 });

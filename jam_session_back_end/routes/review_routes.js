@@ -16,7 +16,9 @@ router.post("/review/new", async function (req, res) {
     let inserts = [
         req.body.reviewer_id,
         req.body.star_rating,
-        req.body.comments
+        req.body.comments,
+        req.body.reviewed_id,
+        new Date(),
     ];
     try {
         review_controller.createReview(inserts, res);

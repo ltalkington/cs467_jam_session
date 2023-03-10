@@ -22,6 +22,7 @@ import UpdateVideoPost from "./Pages/Application/CRUD/YourPosts/UpdateYourVideoP
 import CreateMessages from "./Pages/Application/CRUD/Messages/CreateMessage.js";
 import UpdateTextPost from "./Pages/Application/CRUD/YourPosts/UpdateYourPosts.js";
 import UpdateUserProfile from "./Pages/Application/CRUD/Profile/UpdateProfile";
+import Review from "./Pages/Application/Reviews.js";
 
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -64,9 +65,9 @@ function App() {
             element={<AuthenticationGuard component={Profile} />}
           />
           <Route
-              path="/updateprofile"
-              exact
-              element={<AuthenticationGuard component={UpdateUserProfile} />}
+            path="/updateprofile"
+            exact
+            element={<AuthenticationGuard component={UpdateUserProfile} />}
           />
           <Route
             path="/timeline"
@@ -117,6 +118,11 @@ function App() {
             path="/updatejamsession"
             exact
             element={<AuthenticationGuard component={UpdateJamSession} />}
+          />
+          <Route
+            path="/review"
+            exact
+            element={<AuthenticationGuard component={Review} />}
           />
 
           <Route
