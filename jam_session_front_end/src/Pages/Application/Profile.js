@@ -62,6 +62,7 @@ function Profile() {
         setUserProfile(await getOrMakeProfile(user));
       }
     }
+    getUserProfile();
   }, [user]);
 
   return (
