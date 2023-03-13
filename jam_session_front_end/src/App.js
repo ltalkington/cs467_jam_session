@@ -154,51 +154,67 @@ function App() {
 
 async function makeProfileIfNoProfile(user) {
   try {
-    await fetch(
-      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${user.sub}`,
+    let id = user.sub.split('|')[1];
+    let response = await fetch(
+      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${id}`,
       {
         method: "GET",
       }
     );
+    if (response.status !== 200) {
+      await makeUserIfNoUser();
+      let profile_inserts = {
+        user_id: id,
+        display_name: user.name,
+        user_photo_link: user.picture,
+        location: "",
+        instruments: "",
+        experience: "",
+        liked_genres: "",
+        disliked_genres: "",
+        portfolio_link: "",
+        hourly_fee: 0,
+        availability: "",
+        review_id: "",
+      };
+      let profile_response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/user_profiles`, {
+        method: "POST",
+        body: JSON.stringify(profile_inserts),
+      });
+
+      if (profile_response.status !== 201) {
+        alert('Error creating user profile');
+      }
+    }
   } catch (error) {
-    await makeUserIfNoUser();
-    let profile_inserts = {
-      user_id: user.sub,
-      display_name: user.name,
-      user_photo_link: user.picture,
-      location: "",
-      instruments: "",
-      experience: "",
-      liked_genres: "",
-      disliked_genres: "",
-      portfolio_link: "",
-      hourly_fee: 0,
-      availability: "",
-      review_id: "",
-    };
-    await fetch(`${process.env.REACT_APP_API_SERVER_URL}/user_profiles`, {
-      method: "POST",
-      body: JSON.stringify(profile_inserts),
-    });
+    alert('Error connecting to user profile database');
   }
 }
 
 async function makeUserIfNoUser(user) {
+  let id = user.sub.split('|')[1];
   try {
-    await fetch(`${process.env.REACT_APP_API_SERVER_URL}/users/${user.sub}`, {
+    let response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/users/${id}`, {
       method: "GET",
     });
+
+    if (response.status !== 200) {
+      let user_inserts = {
+        user_id: id,
+        name: user.name,
+        profile_link: "",
+        email_address: user.email,
+      };
+      let user_response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/users`, {
+        method: "POST",
+        body: JSON.stringify(user_inserts),
+      });
+      if (user_response.status !== 201) {
+        alert('Error creating user');
+      }
+    }
   } catch (error) {
-    let user_inserts = {
-      user_id: user.sub,
-      name: user.name,
-      profile_link: "",
-      email_address: user.email,
-    };
-    await fetch(`${process.env.REACT_APP_API_SERVER_URL}/users`, {
-      method: "POST",
-      body: JSON.stringify(user_inserts),
-    });
+    alert('Error connecting to user database');
   }
 }
 

@@ -26,6 +26,7 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import FolderIcon from "@mui/icons-material/Folder";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -43,7 +44,7 @@ function Profile() {
   // This will grab user data from the login process and make it available.
   // user.name, user.picture, and user.email are available.
   // Other data may need to be pulled from a database query.
-  const { user } = useAuth0();
+  const { user, isLoading } = useAuth0();
   const [userProfile, setUserProfile] = useState({});
   const navigate = useNavigate();
 
@@ -59,12 +60,27 @@ function Profile() {
   useEffect(() => {
     async function getUserProfile() {
       if (user) {
+
         setUserProfile(await getOrMakeProfile(user));
       }
     }
     getUserProfile();
   }, [user]);
 
+  if (isLoading) {
+    return (
+        <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            className="page-layout"
+        >
+          <CircularProgress />
+        </div>
+    );
+  }
   return (
     <div>
       <ResponsiveDrawer />
@@ -323,37 +339,50 @@ function Profile() {
 
 async function getOrMakeProfile(user) {
   let profile;
+
+  let id = user.sub.split('|')[1];
+
   try {
     let response = await fetch(
-      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${user.sub}`,
+      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${id}`,
       {
         method: "GET",
       }
     );
-    profile = JSON.parse(response.body);
-  } catch (error) {
-    let profile_inserts = {
-      user_id: user.sub,
-      display_name: user.name,
-      user_photo_link: user.picture,
-      location: "",
-      instruments: "",
-      experience: "",
-      liked_genres: "",
-      disliked_genres: "",
-      portfolio_link: "",
-      hourly_fee: 0,
-      availability: "",
-      review_id: "",
-    };
-    let response = await fetch(
-      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
-      {
-        method: "POST",
-        body: JSON.stringify(profile_inserts),
+
+    if (response.status === 200) {
+      profile =  JSON.parse(response.body);
+    } else {
+      let profile_inserts = {
+        user_id: id,
+        display_name: user.name,
+        user_photo_link: user.picture,
+        location: "",
+        instruments: "",
+        experience: "",
+        liked_genres: "",
+        disliked_genres: "",
+        portfolio_link: "",
+        hourly_fee: 0,
+        availability: "",
+        review_id: "",
+      };
+      let profile_response = await fetch(
+          `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
+          {
+            method: "POST",
+            body: JSON.stringify(profile_inserts),
+          }
+      );
+      if (profile_response.status === 201) {
+        profile = JSON.parse(profile_response.body);
+      } else {
+        alert('Error connecting to user profile database');
       }
-    );
-    profile = JSON.parse(response.body);
+      return profile;
+    }
+  } catch (error) {
+    alert ('Network error');
   }
   return profile;
 }
