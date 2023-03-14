@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
@@ -20,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const drawerWidth = 240;
 
@@ -30,6 +32,7 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  const { logout } = useAuth0();
 
   const drawer = (
     <div>
@@ -64,6 +67,13 @@ function ResponsiveDrawer(props) {
             <AccountBoxIcon />
           </ListItemIcon>
           <ListItemText primary="Profile" />
+        </ListItem>
+
+        <ListItem button key="Review" component={Link} to="/review">
+          <ListItemIcon>
+            <ReviewsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Review a Musician " />
         </ListItem>
 
         <ListItem button key="YourPost" component={Link} to="/posts">
@@ -103,7 +113,7 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button key="Log Out" component={Link} to="/logout">
+        <ListItem button key="Log Out" onClick={logout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

@@ -40,7 +40,7 @@ function LandingPage() {
               </h1>
               <p>
                 Be where you are meant to be and jam with who you are meant to
-                jam with!
+                jam with from around the world!
               </p>
 
               {!isAuthenticated && (

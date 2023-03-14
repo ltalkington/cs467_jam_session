@@ -4,9 +4,48 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Message from "../../Components/Application/Messages/Message";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import React, { useState, useEffect } from "react";
 
+const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
+  position: "absolute",
+  "&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft": {
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
+    top: theme.spacing(2),
+    left: theme.spacing(2),
+  },
+}));
 function Messages() {
   let drawerWidth = 240;
+  const navigate = useNavigate();
+  const [messages, setMessages] = useState();
+
+  const actions = [
+    {
+      icon: <AddIcon onClick={() => navigate("/createmessage")} />,
+      name: "Create Message",
+    },
+  ];
+  const loadMessages = async () => {
+    console.log(messages);
+    var user_id = 1;
+    const response = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/messages/received"
+    );
+    const message = await response.json();
+    setMessages(message);
+  };
+  useEffect(() => {
+    loadMessages();
+  }, []);
   return (
     <div>
       <ResponsiveDrawer></ResponsiveDrawer>
@@ -97,11 +136,25 @@ function Messages() {
               alignContent: "center",
             }}
           >
-            <Message></Message>
-            <Message></Message>
-            <Message></Message>
-            <Message></Message>
+            {messages?.map((posts, i) => (
+              <Message key={i} postInfo={posts}></Message>
+            ))}
           </Grid>
+        </Box>
+        <Box sx={{ height: 30, mt: 3, flexGrow: 3 }}>
+          <StyledSpeedDial
+            ariaLabel="Jam Utilities"
+            sx={{ position: "fixed", bottom: 0, right: "100%" }}
+            icon={<SpeedDialIcon />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+              />
+            ))}
+          </StyledSpeedDial>
         </Box>
       </header>
     </div>

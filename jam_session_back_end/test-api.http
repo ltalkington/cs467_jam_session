@@ -41,3 +41,8 @@ content-type: application/json
 ###
 DELETE http://localhost:8000/deletejamsession/18 HTTP/1.1
 content-type: application/json
+
+####
+
+###
+GET http://localhost:8000/textposts HTTP/1.1

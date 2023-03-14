@@ -5,42 +5,98 @@ import Tabber from "../../Components/Application/Timeline/Tabber.js";
 import TextPost from "../../Components/Application/Timeline/TextPost.js";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import AddIcon from "@mui/icons-material/Add";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import FolderIcon from "@mui/icons-material/Folder";
+import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
+  position: "absolute",
+  "&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft": {
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
+    top: theme.spacing(2),
+    left: theme.spacing(2),
+  },
+}));
 
 function Timeline() {
+  const navigate = useNavigate();
+  const { user } = useAuth0();
+  console.log(user.sub);
+
   let drawerWidth = 240;
   const [tabber, setTabber] = useState(0);
+  const [textPosts, setTextPosts] = useState();
+  const [videoPosts, setVideoPosts] = useState();
+
+  const loadTextPosts = async () => {
+    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/textpost");
+    const posts = await response.json();
+    console.log(posts);
+    setTextPosts(posts);
+  };
+  useEffect(() => {
+    loadTextPosts();
+  }, []);
+
+  const loadVideoPosts = async () => {
+    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/videopost");
+    const posts = await response.json();
+    console.log(posts);
+    setVideoPosts(posts);
+  };
+  useEffect(() => {
+    loadVideoPosts();
+  }, []);
+
+  const actions = [
+    {
+      icon: <VideocamIcon onClick={() => navigate("/createvideopost")} />,
+      name: "Create Jam Session Video Post",
+    },
+    {
+      icon: <DynamicFeedIcon onClick={() => navigate("/createtextpost")} />,
+      name: "Create Jam Session Text Post",
+    },
+    {
+      icon: <FolderIcon onClick={() => navigate("/posts")} />,
+      name: "Your Posts",
+    },
+  ];
   useEffect(() => {
     Component(tabber);
-    return () => {};
+    return () => { };
   }, []);
   const Component = (tabber) => {
     let x = tabber;
     if (tabber.tabber === 1) {
-      return <TextPosts></TextPosts>;
+      return (
+        <div>
+          {textPosts?.map((posts, i) => (
+            <TextPost key={i} postInfo={posts}></TextPost>
+          ))}
+        </div>
+      );
     } else {
-      return <VideoPosts></VideoPosts>;
+      return (
+        <div>
+          {videoPosts?.map((posts, i) => (
+            <VideoPost key={i} postInfo={posts}></VideoPost>
+          ))}
+        </div>
+      );
     }
   };
-  function VideoPosts() {
-    return (
-      <>
-        <VideoPost></VideoPost>
-        <VideoPost></VideoPost>
-        <VideoPost></VideoPost>
-        <VideoPost></VideoPost>
-      </>
-    );
-  }
-  function TextPosts() {
-    return (
-      <>
-        <TextPost></TextPost>
-        <TextPost></TextPost>
-        <TextPost></TextPost>
-        <TextPost></TextPost>
-      </>
-    );
-  }
+
   return (
     <header className="App-header3">
       <ResponsiveDrawer></ResponsiveDrawer>
@@ -76,6 +132,21 @@ function Timeline() {
         >
           <Component tabber={tabber}></Component>
         </Grid>
+      </Box>
+      <Box sx={{ height: 30, mt: 3, flexGrow: 3 }}>
+        <StyledSpeedDial
+          ariaLabel="Jam Utilities"
+          sx={{ position: "fixed", bottom: 0, right: "100%" }}
+          icon={<SpeedDialIcon />}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+            />
+          ))}
+        </StyledSpeedDial>
       </Box>
     </header>
   );

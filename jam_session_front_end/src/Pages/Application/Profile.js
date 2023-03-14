@@ -1,6 +1,7 @@
 import ResponsiveDrawer from "../../Components/Application/Sidebar/Sidebar.js";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -12,25 +13,95 @@ import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import SpeedIcon from "@mui/icons-material/Speed";
 import Stack from "@mui/material/Stack";
 import StarsIcon from "@mui/icons-material/Stars";
+import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import FolderIcon from "@mui/icons-material/Folder";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
+  position: "absolute",
+  "&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft": {
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
+    top: theme.spacing(2),
+    left: theme.spacing(2),
+  },
+}));
 
 function Profile() {
   // This will grab user data from the login process and make it available.
   // user.name, user.picture, and user.email are available.
   // Other data may need to be pulled from a database query.
-  const { user } = useAuth0();
+  const { user, isLoading } = useAuth0();
+  const [userProfile, setUserProfile] = useState({});
+  const [userName, setUserName] = useState();
+  const [userID, setUserID] = useState();
+  const [reviews, setReviews] = useState();
 
-  // If no user is logged in, no Profile is displayed. But the route is already
-  // protected with an Authentication Guard, so it shouldn't be an issue.
-  if (!user) {
-    return null;
+  const navigate = useNavigate();
+
+  const actions = [
+    {
+      icon: (
+        <EditIcon onClick={() => navigate("/updateprofile", userProfile)} />
+      ),
+      name: "Update User Profile",
+    },
+  ];
+  const loadUserProfile = async () => {
+    const auth_id = user.sub.split("|")[1];
+
+    const userresponse = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
+    );
+    const posts = await userresponse.json();
+    var user_id = posts[0].user_id;
+    var user_name = posts[0].name;
+    setUserName(user_name);
+    setUserID(user_id);
+    const resID = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/userprofile/" + user_id
+    );
+    const user_profile = await resID.json();
+    setUserProfile(user_profile[0]);
+    console.log(userProfile);
+    const review = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/reviews/"
+    );
+    const reviews = await review.json();
+    console.log("reviews", reviews);
+    setReviews(reviews);
+  };
+  useEffect(() => {
+    loadUserProfile();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        className="page-layout"
+      >
+        <CircularProgress />
+      </div>
+    );
   }
-
   return (
     <div>
       <ResponsiveDrawer />
@@ -39,8 +110,8 @@ function Profile() {
       <header className="App-header3">
         <AppBar position="relative" color={"secondary"}>
           <Avatar
-            alt={user.name}
-            src={user.picture}
+            alt={userName}
+            src={userName}
             sx={{ width: 200, height: 200, mx: "auto" }}
             variant="circular"
           />
@@ -50,20 +121,20 @@ function Profile() {
             color="text.primary"
             paragraph
           >
-            {user.name}
+            {userName}
           </Typography>
           <Typography variant="p" align="center" color="text.primary" paragraph>
             <span>
               <SpeedIcon />
-              Expert{" "}
+              {userProfile.experience}
             </span>
             <span>
               <MonetizationOnIcon />
-              $50/hour{" "}
+              {`\$${userProfile.fees}/hr`}
             </span>
             <span>
               <LocationOnIcon />
-              Portland, OR{" "}
+              {userProfile.location}
             </span>
           </Typography>
         </AppBar>
@@ -92,11 +163,7 @@ function Profile() {
               spacing={2}
               justifyContent="center"
               alignItems="center"
-            >
-              <Avatar>A</Avatar>
-              <Avatar>B</Avatar>
-              <Avatar>C</Avatar>
-            </Stack>
+            ></Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item sx={{ p: 2 }}>
                 <Card
@@ -112,14 +179,9 @@ function Profile() {
                       Instruments
                     </Typography>
                     <Typography>
-                      <List>
-                        <ListItem>
-                          <ListItemText primary="Guitar" />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemText primary="Trumpet" />
-                        </ListItem>
-                      </List>
+                      {displayListItems(
+                        makeStringList(userProfile.instruments, ", ")
+                      )}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -138,14 +200,9 @@ function Profile() {
                       Liked Genres
                     </Typography>
                     <Typography>
-                      <List>
-                        <ListItem>
-                          <ListItemText primary="Folk" />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemText primary="Classical" />
-                        </ListItem>
-                      </List>
+                      {displayListItems(
+                        makeStringList(userProfile.liked_genres, ", ")
+                      )}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -164,14 +221,9 @@ function Profile() {
                       Disliked Genres
                     </Typography>
                     <Typography>
-                      <List>
-                        <ListItem>
-                          <ListItemText primary="Hip-Hop" />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemText primary="Rock" />
-                        </ListItem>
-                      </List>
+                      {displayListItems(
+                        makeStringList(userProfile.disliked_genres, ", ")
+                      )}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -200,23 +252,7 @@ function Profile() {
                   <Typography variant="h6" component="div">
                     Availability
                   </Typography>
-                  <List>
-                    <ListItem>
-                      <ListItemText primary="10/13/23" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="10/14/23" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="10/17/23" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="10/18/23" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="10/30/23" />
-                    </ListItem>
-                  </List>
+                  Coming soon!!
                 </CardContent>
               </Card>
             </Grid>
@@ -230,33 +266,129 @@ function Profile() {
               >
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" component="div">
-                    Ratings
+                    Reviews
                   </Typography>
                   <Typography variant="p" component="div">
                     <StarsIcon /> Overall: 4.6
                   </Typography>
                   <List>
-                    <ListItem>
-                      <ListItemText primary="4" secondary="6/13/23" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="3" secondary="4/3/22" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="5" secondary="9/5/21" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="5" secondary="1/19/20" />
-                    </ListItem>
+                    {reviews?.map((review) => (
+                      <ListItem>
+                        <ListItemText
+                          primary={review.star_rating}
+                          secondary={review.date_created}
+                        ></ListItemText>
+                      </ListItem>
+                    ))}
                   </List>
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
         </Container>
+        <Box sx={{ height: 30, mt: 3, flexGrow: 3 }}>
+          <StyledSpeedDial
+            ariaLabel="Jam Utilities"
+            sx={{ position: "fixed", bottom: 0, right: "100%" }}
+            icon={<SpeedDialIcon />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+              />
+            ))}
+          </StyledSpeedDial>
+        </Box>
       </header>
     </div>
   );
+}
+
+// async function getOrMakeProfile(user) {
+//   let profile;
+
+//   let id = user.sub.split("|")[1];
+
+//   try {
+//     let response = await fetch(
+//       `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${id}`,
+//       {
+//         method: "GET",
+//       }
+//     );
+
+//     if (response.status === 200) {
+//       profile = JSON.parse(response.body);
+//     } else {
+//       let profile_inserts = {
+//         user_id: id,
+//         display_name: user.name,
+//         user_photo_link: user.picture,
+//         location: "",
+//         instruments: "",
+//         experience: "",
+//         liked_genres: "",
+//         disliked_genres: "",
+//         portfolio_link: "",
+//         hourly_fee: 0,
+//         availability: "",
+//         review_id: "",
+//       };
+//       let profile_response = await fetch(
+//         `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
+//         {
+//           method: "POST",
+//           body: JSON.stringify(profile_inserts),
+//         }
+//       );
+//       if (profile_response.status === 201) {
+//         profile = JSON.parse(profile_response.body);
+//       } else {
+//         alert("Error connecting to user profile database");
+//       }
+//       return profile;
+//     }
+//   } catch (error) {
+//     alert("Network error");
+//   }
+//   return profile;
+// }
+
+// Use to split strings of instruments, experience, genres, etc.
+function makeStringList(string, delimiter) {
+  try {
+    return string.split(delimiter);
+  } catch (err) {
+    return "";
+  }
+}
+
+function displayListItems(list) {
+  if (list.isEmpty) {
+    return null;
+  }
+  let things;
+  if (typeof list[0] === "string") {
+    things = list.map((thing) => (
+      <ListItem>
+        {" "}
+        <ListItemText primary={thing} />{" "}
+      </ListItem>
+    ));
+  } else if (typeof list[0] === "object") {
+    things = list.map((thing) => (
+      <ListItem>
+        {" "}
+        <ListItemText
+          primary={thing.star_rating}
+          secondary={thing.comments}
+        />{" "}
+      </ListItem>
+    ));
+  }
+  return <List>{things}</List>;
 }
 
 export default Profile;
