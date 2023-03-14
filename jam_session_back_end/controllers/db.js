@@ -1,5 +1,5 @@
 var mysql = require("mysql");
-require('dotenv').config();
+require("dotenv").config();
 
 var pool = mysql.createPool({
   connectionLimit: 10,
@@ -16,8 +16,8 @@ const returnCallback = (error, results, fields, res) => {
     res.status(200).send(results);
     return;
   }
-}
+};
 module.exports = {
   pool,
-  returnCallback
+  returnCallback,
 };

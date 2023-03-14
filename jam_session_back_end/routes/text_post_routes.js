@@ -36,7 +36,6 @@ router.put("/textpost/:Text_Post_id/edit", async function (req, res) {
     req.body.post_date,
     req.params.Text_Post_id,
   ];
-  console.log(inserts);
   try {
     post_controller.updatePost(inserts, res);
   } catch (error) {
@@ -59,7 +58,6 @@ router.get("/textpost/:id", async function (req, res) {
 router.get("/textpost", async function (req, res) {
   try {
     post_controller.getPosts(res);
-    console.log(res);
   } catch (error) {
     console.log(JSON.stringify(error));
     res.status(400).send(JSON.stringify(error));
@@ -81,7 +79,7 @@ router.delete("/textpost/:id/delete", async function (req, res) {
 //get all posts where the current user is a recipient
 router.get("/textuser/:id/posts/", async function (req, res) {
   try {
-    post_controller.getPostsByPosterId(req.params.id, res);
+    await post_controller.getPostsByPosterId(req.params.id, res);
   } catch (error) {
     console.log(JSON.stringify(error));
     res.status(400).send(JSON.stringify(error));

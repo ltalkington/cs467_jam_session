@@ -46,6 +46,10 @@ function Profile() {
   // Other data may need to be pulled from a database query.
   const { user, isLoading } = useAuth0();
   const [userProfile, setUserProfile] = useState({});
+  const [userName, setUserName] = useState();
+  const [userID, setUserID] = useState();
+  const [reviews, setReviews] = useState();
+
   const navigate = useNavigate();
 
   const actions = [
@@ -56,29 +60,46 @@ function Profile() {
       name: "Update User Profile",
     },
   ];
+  const loadUserProfile = async () => {
+    const auth_id = user.sub.split("|")[1];
 
+    const userresponse = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
+    );
+    const posts = await userresponse.json();
+    var user_id = posts[0].user_id;
+    var user_name = posts[0].name;
+    setUserName(user_name);
+    setUserID(user_id);
+    const resID = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/userprofile/" + user_id
+    );
+    const user_profile = await resID.json();
+    setUserProfile(user_profile[0]);
+    console.log(userProfile);
+    const review = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/reviews/"
+    );
+    const reviews = await review.json();
+    console.log("reviews", reviews);
+    setReviews(reviews);
+  };
   useEffect(() => {
-    async function getUserProfile() {
-      if (user) {
-
-        setUserProfile(await getOrMakeProfile(user));
-      }
-    }
-    getUserProfile();
-  }, [user]);
+    loadUserProfile();
+  }, []);
 
   if (isLoading) {
     return (
-        <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            className="page-layout"
-        >
-          <CircularProgress />
-        </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        className="page-layout"
+      >
+        <CircularProgress />
+      </div>
     );
   }
   return (
@@ -89,8 +110,8 @@ function Profile() {
       <header className="App-header3">
         <AppBar position="relative" color={"secondary"}>
           <Avatar
-            alt={userProfile.name}
-            src={userProfile.user_photo_link}
+            alt={userName}
+            src={userName}
             sx={{ width: 200, height: 200, mx: "auto" }}
             variant="circular"
           />
@@ -100,7 +121,7 @@ function Profile() {
             color="text.primary"
             paragraph
           >
-            {userProfile.name}
+            {userName}
           </Typography>
           <Typography variant="p" align="center" color="text.primary" paragraph>
             <span>
@@ -109,7 +130,7 @@ function Profile() {
             </span>
             <span>
               <MonetizationOnIcon />
-              {`\$${userProfile.hourly_fee}/hr`}
+              {`\$${userProfile.fees}/hr`}
             </span>
             <span>
               <LocationOnIcon />
@@ -142,11 +163,7 @@ function Profile() {
               spacing={2}
               justifyContent="center"
               alignItems="center"
-            >
-              <Avatar>A</Avatar>
-              <Avatar>B</Avatar>
-              <Avatar>C</Avatar>
-            </Stack>
+            ></Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item sx={{ p: 2 }}>
                 <Card
@@ -165,14 +182,6 @@ function Profile() {
                       {displayListItems(
                         makeStringList(userProfile.instruments, ", ")
                       )}
-                      {/*<List>*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText primary="Guitar" />*/}
-                      {/*  </ListItem>*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText primary="Trumpet" />*/}
-                      {/*  </ListItem>*/}
-                      {/*</List>*/}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -194,14 +203,6 @@ function Profile() {
                       {displayListItems(
                         makeStringList(userProfile.liked_genres, ", ")
                       )}
-                      {/*<List>*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText primary="Folk" />*/}
-                      {/*  </ListItem>*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText primary="Classical" />*/}
-                      {/*  </ListItem>*/}
-                      {/*</List>*/}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -220,18 +221,9 @@ function Profile() {
                       Disliked Genres
                     </Typography>
                     <Typography>
-                      hello
                       {displayListItems(
                         makeStringList(userProfile.disliked_genres, ", ")
                       )}
-                      {/*<List>*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText primary="Hip-Hop" />*/}
-                      {/*  </ListItem>*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText primary="Rock" />*/}
-                      {/*  </ListItem>*/}
-                      {/*</List>*/}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -260,26 +252,7 @@ function Profile() {
                   <Typography variant="h6" component="div">
                     Availability
                   </Typography>
-                  {displayListItems(
-                    makeStringList(userProfile.availability, ", ")
-                  )}
-                  {/*<List>*/}
-                  {/*  <ListItem>*/}
-                  {/*    <ListItemText primary="10/13/23" />*/}
-                  {/*  </ListItem>*/}
-                  {/*  <ListItem>*/}
-                  {/*    <ListItemText primary="10/14/23" />*/}
-                  {/*  </ListItem>*/}
-                  {/*  <ListItem>*/}
-                  {/*    <ListItemText primary="10/17/23" />*/}
-                  {/*  </ListItem>*/}
-                  {/*  <ListItem>*/}
-                  {/*    <ListItemText primary="10/18/23" />*/}
-                  {/*  </ListItem>*/}
-                  {/*  <ListItem>*/}
-                  {/*    <ListItemText primary="10/30/23" />*/}
-                  {/*  </ListItem>*/}
-                  {/*</List>*/}
+                  Coming soon!!
                 </CardContent>
               </Card>
             </Grid>
@@ -293,24 +266,20 @@ function Profile() {
               >
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" component="div">
-                    Ratings
+                    Reviews
                   </Typography>
                   <Typography variant="p" component="div">
                     <StarsIcon /> Overall: 4.6
                   </Typography>
                   <List>
-                    <ListItem>
-                      <ListItemText primary="4" secondary="6/13/23" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="3" secondary="4/3/22" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="5" secondary="9/5/21" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary="5" secondary="1/19/20" />
-                    </ListItem>
+                    {reviews?.map((review) => (
+                      <ListItem>
+                        <ListItemText
+                          primary={review.star_rating}
+                          secondary={review.date_created}
+                        ></ListItemText>
+                      </ListItem>
+                    ))}
                   </List>
                 </CardContent>
               </Card>
@@ -337,64 +306,63 @@ function Profile() {
   );
 }
 
-async function getOrMakeProfile(user) {
-  let profile;
+// async function getOrMakeProfile(user) {
+//   let profile;
 
-  let id = user.sub.split('|')[1];
+//   let id = user.sub.split("|")[1];
 
-  try {
-    let response = await fetch(
-      `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${id}`,
-      {
-        method: "GET",
-      }
-    );
+//   try {
+//     let response = await fetch(
+//       `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${id}`,
+//       {
+//         method: "GET",
+//       }
+//     );
 
-    if (response.status === 200) {
-      profile =  JSON.parse(response.body);
-    } else {
-      let profile_inserts = {
-        user_id: id,
-        display_name: user.name,
-        user_photo_link: user.picture,
-        location: "",
-        instruments: "",
-        experience: "",
-        liked_genres: "",
-        disliked_genres: "",
-        portfolio_link: "",
-        hourly_fee: 0,
-        availability: "",
-        review_id: "",
-      };
-      let profile_response = await fetch(
-          `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
-          {
-            method: "POST",
-            body: JSON.stringify(profile_inserts),
-          }
-      );
-      if (profile_response.status === 201) {
-        profile = JSON.parse(profile_response.body);
-      } else {
-        alert('Error connecting to user profile database');
-      }
-      return profile;
-    }
-  } catch (error) {
-    alert ('Network error');
-  }
-  return profile;
-}
+//     if (response.status === 200) {
+//       profile = JSON.parse(response.body);
+//     } else {
+//       let profile_inserts = {
+//         user_id: id,
+//         display_name: user.name,
+//         user_photo_link: user.picture,
+//         location: "",
+//         instruments: "",
+//         experience: "",
+//         liked_genres: "",
+//         disliked_genres: "",
+//         portfolio_link: "",
+//         hourly_fee: 0,
+//         availability: "",
+//         review_id: "",
+//       };
+//       let profile_response = await fetch(
+//         `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
+//         {
+//           method: "POST",
+//           body: JSON.stringify(profile_inserts),
+//         }
+//       );
+//       if (profile_response.status === 201) {
+//         profile = JSON.parse(profile_response.body);
+//       } else {
+//         alert("Error connecting to user profile database");
+//       }
+//       return profile;
+//     }
+//   } catch (error) {
+//     alert("Network error");
+//   }
+//   return profile;
+// }
 
 // Use to split strings of instruments, experience, genres, etc.
 function makeStringList(string, delimiter) {
   try {
     return string.split(delimiter);
   } catch (err) {
-    return ""
+    return "";
   }
-
 }
 
 function displayListItems(list) {

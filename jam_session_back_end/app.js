@@ -21,7 +21,6 @@ app.use(express.static(__dirname + "/public")); // If we have anything that need
  * Routes
  */
 
-
 app.use(jam_session_routes);
 app.use(message_routes);
 app.use(review_routes);
