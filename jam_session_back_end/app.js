@@ -21,6 +21,9 @@ app.use(express.static(__dirname + "/public")); // If we have anything that need
  * All Routes
  */
 
+app.get("/", (req, res) => {
+  res.status(200).send("Connection good.");
+})
 app.use(jam_session_routes);
 app.use(message_routes);
 app.use(review_routes);
@@ -30,7 +33,11 @@ app.use(user_routes);
 app.use(profile_routes);
 app.use(video_post_routes);
 
-app.listen(process.env.PORT, function () {
+app.get("*", (req, res) => {
+  res.status(400).send("Invalid route. Please try again.");
+})
+
+app.listen(PORT, function () {
   // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
   console.log("Jam Session backend now running on port " + process.env.PORT);
 });
