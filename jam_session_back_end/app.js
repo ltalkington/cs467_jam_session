@@ -18,7 +18,7 @@ const profile_routes = require("./routes/user_profile_routes");
 app.use(express.static(__dirname + "/public")); // If we have anything that needs to go in a public directory.
 
 /**
- * Routes
+ * All Routes
  */
 
 app.use(jam_session_routes);
