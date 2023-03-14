@@ -8,7 +8,7 @@ const SignupButton = ({text}) => {
     const handleSignUp = async () => {
         await loginWithRedirect({
             appState: {
-                returnTo: "/timeline",
+                returnTo: "/startupinfo",
             },
             authorizationParams: {
                 screen_hint: "signup",

@@ -7,9 +7,9 @@ const LoginButton = ({ text }) => {
 
   const handleLogin = async () => {
     await loginWithRedirect({
-        appState: {
-            returnTo: '/timeline',
-        },
+      appState: {
+        returnTo: "/startupinfo",
+      },
     });
   };
 
@@ -26,4 +26,4 @@ const LoginButton = ({ text }) => {
   );
 };
 
-export default LoginButton
+export default LoginButton;

@@ -16,11 +16,14 @@ function Posts() {
   const loadTextPosts = async () => {
     const auth_id = user.sub.split("|")[1];
 
-    const userresponse = await fetch(process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id);
+    const userresponse = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
+    );
     const posts = await userresponse.json();
     var user_id = posts[0].user_id;
-    console.log(user_id);
-    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/textpost/" + user_id);
+    const response = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/textpost/" + user_id
+    );
     const userPosts = await response.json();
     setTextPosts(userPosts);
   };
@@ -31,10 +34,14 @@ function Posts() {
   const loadVideoPosts = async () => {
     const auth_id = user.sub.split("|")[1];
 
-    const userresponse = await fetch(process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id);
+    const userresponse = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
+    );
     const posts = await userresponse.json();
     var user_id = posts[0].user_id;
-    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/videopost/" + user_id);
+    const response = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/videopost/" + user_id
+    );
     const userPosts = await response.json();
     setVideoPosts(userPosts);
   };
@@ -44,7 +51,7 @@ function Posts() {
 
   useEffect(() => {
     Component(tabber);
-    return () => { };
+    return () => {};
   }, []);
   const Component = (tabber) => {
     let x = tabber;

@@ -11,6 +11,7 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import React, { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -24,6 +25,8 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }));
 function Messages() {
+  const { user } = useAuth0();
+
   let drawerWidth = 240;
   const navigate = useNavigate();
   const [messages, setMessages] = useState();
@@ -35,10 +38,18 @@ function Messages() {
     },
   ];
   const loadMessages = async () => {
-    console.log(messages);
-    var user_id = 1;
+    const auth_id = user.sub.split("|")[1];
+
+    const userIDresponse = await fetch(
+      `${process.env.REACT_APP_API_SERVER_URL}/users/` + auth_id
+    );
+    const posts = await userIDresponse.json();
+    const user_id = await posts[0].user_id;
     const response = await fetch(
-      process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/messages/received"
+      process.env.REACT_APP_API_SERVER_URL +
+        "/user/" +
+        user_id +
+        "/messages/received"
     );
     const message = await response.json();
     setMessages(message);

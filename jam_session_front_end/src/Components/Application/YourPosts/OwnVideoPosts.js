@@ -38,15 +38,15 @@ export default function VideoPost({ postInfo, loadVideoPosts }) {
 
   const loadUserID = async () => {
     const auth_id = user.sub.split("|")[1];
-    const userresponse = await fetch(process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id);
+    const userresponse = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
+    );
     const posts = await userresponse.json();
-    console.log(posts);
     setUserName(posts[0].name);
   };
   useEffect(() => {
     loadUserID();
   }, []);
-  console.log(userName);
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -59,7 +59,10 @@ export default function VideoPost({ postInfo, loadVideoPosts }) {
     };
 
     const response = await fetch(
-      process.env.REACT_APP_API_SERVER_URL + "/videopost/" + postInfo.Video_Post_id + "/delete",
+      process.env.REACT_APP_API_SERVER_URL +
+        "/videopost/" +
+        postInfo.Video_Post_id +
+        "/delete",
       {
         method: "DELETE",
         body: JSON.stringify(data),

@@ -76,12 +76,10 @@ function Profile() {
     );
     const user_profile = await resID.json();
     setUserProfile(user_profile[0]);
-    console.log(userProfile);
     const review = await fetch(
       process.env.REACT_APP_API_SERVER_URL + "/user/" + user_id + "/reviews/"
     );
     const reviews = await review.json();
-    console.log("reviews", reviews);
     setReviews(reviews);
   };
   useEffect(() => {
@@ -111,7 +109,7 @@ function Profile() {
         <AppBar position="relative" color={"secondary"}>
           <Avatar
             alt={userName}
-            src={userName}
+            src={user.picture}
             sx={{ width: 200, height: 200, mx: "auto" }}
             variant="circular"
           />

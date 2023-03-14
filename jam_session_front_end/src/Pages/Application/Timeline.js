@@ -31,7 +31,6 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 function Timeline() {
   const navigate = useNavigate();
   const { user } = useAuth0();
-  console.log(user.sub);
 
   let drawerWidth = 240;
   const [tabber, setTabber] = useState(0);
@@ -39,9 +38,10 @@ function Timeline() {
   const [videoPosts, setVideoPosts] = useState();
 
   const loadTextPosts = async () => {
-    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/textpost");
+    const response = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/textpost"
+    );
     const posts = await response.json();
-    console.log(posts);
     setTextPosts(posts);
   };
   useEffect(() => {
@@ -49,9 +49,10 @@ function Timeline() {
   }, []);
 
   const loadVideoPosts = async () => {
-    const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/videopost");
+    const response = await fetch(
+      process.env.REACT_APP_API_SERVER_URL + "/videopost"
+    );
     const posts = await response.json();
-    console.log(posts);
     setVideoPosts(posts);
   };
   useEffect(() => {
@@ -74,7 +75,7 @@ function Timeline() {
   ];
   useEffect(() => {
     Component(tabber);
-    return () => { };
+    return () => {};
   }, []);
   const Component = (tabber) => {
     let x = tabber;

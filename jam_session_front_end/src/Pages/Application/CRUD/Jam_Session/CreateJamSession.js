@@ -62,15 +62,16 @@ function CreateJamSession() {
         body: body,
       };
 
-      console.log(userID);
-
-      const response = await fetch(process.env.REACT_APP_API_SERVER_URL + "/jamsession/new", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        process.env.REACT_APP_API_SERVER_URL + "/jamsession/new",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status === 200 || response.status === 201) {
         alert("Successfully added the Jam Session!");

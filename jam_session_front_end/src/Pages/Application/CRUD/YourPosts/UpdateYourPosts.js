@@ -24,10 +24,11 @@ function UpdateTextPost() {
       post_likes: location.state.post_likes,
     };
 
-    console.log(data);
-
     const response = await fetch(
-      process.env.REACT_APP_API_SERVER_URL + "/textpost/" + location.state.id + "/edit",
+      process.env.REACT_APP_API_SERVER_URL +
+        "/textpost/" +
+        location.state.id +
+        "/edit",
       {
         method: "PUT",
         body: JSON.stringify(data),

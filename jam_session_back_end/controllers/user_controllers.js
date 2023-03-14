@@ -18,7 +18,7 @@ async function getUserByUserId(user_id, res) {
 
 async function createUser(inserts, res) {
   const query =
-    "INSERT INTO Users (auth_id, name, profile_link, email_address) VALUES (?,?,?,?);";
+    "INSERT INTO Users (auth_id, name, email_address) VALUES (?,?,?);";
   await db.pool.query(query, inserts, function (error, results, fields) {
     return db.returnCallback(error, results, fields, res);
   });

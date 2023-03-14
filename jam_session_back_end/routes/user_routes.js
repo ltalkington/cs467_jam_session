@@ -15,7 +15,6 @@ router
     let user_inserts = [
       req.body.auth_id,
       req.body.name,
-      req.body.profile_link,
       req.body.email_address,
     ];
     try {

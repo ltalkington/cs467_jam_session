@@ -1,94 +1,107 @@
-import ResponsiveDrawer from "../../../../Components/Application/Sidebar/Sidebar.js";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useEffect, useState } from "react";
 
-function UpdateUserProfile({ updateProfile }) {
+function MoreInfo() {
   const { user } = useAuth0();
-  const [userProfile, setUserProfile] = useState({});
+
+  const Checker = async () => {
+    const auth_id = user.sub.split("|")[1];
+
+    if (auth_id) {
+      const userIDresponse = await fetch(
+        `${process.env.REACT_APP_API_SERVER_URL}/users/` + auth_id
+      );
+      const posts = await userIDresponse.json();
+      const userID = await posts[0].user_id;
+      if (userID) {
+        navigate("/timeline");
+      }
+    }
+  };
+  Checker();
+
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
   const [location, setLocation] = useState();
   const [instruments, setInstruments] = useState();
   const [experience, setExperience] = useState();
   const [liked, setLiked] = useState();
   const [disliked, setDisliked] = useState();
-  const [fees, setFee] = useState();
-  const [userName, setUserName] = useState();
-  const [userID, setUserID] = useState();
+  const [portfolio, setPortfolio] = useState();
+  const [fee, setFee] = useState();
+  const [availability, setAvailability] = useState();
   const navigate = useNavigate();
-
-  const loadUserProfile = async () => {
-    const auth_id = user.sub.split("|")[1];
-
-    const userresponse = await fetch(
-      process.env.REACT_APP_API_SERVER_URL + "/users/" + auth_id
-    );
-    const posts = await userresponse.json();
-    var user_id = posts[0].user_id;
-    var user_name = posts[0].name;
-    setUserName(user_name);
-    setUserID(user_id);
-    const resID = await fetch(
-      process.env.REACT_APP_API_SERVER_URL + "/userprofile/" + user_id
-    );
-    const user_profile = await resID.json();
-    setUserProfile(user_profile[0]);
-    setLocation(user_profile[0].location);
-    setInstruments(user_profile[0].instruments);
-    setExperience(user_profile[0].experience);
-    setLiked(user_profile[0].liked_genres);
-    setDisliked(user_profile[0].disliked_genres);
-    setFee(user_profile[0].fees);
-  };
-  useEffect(() => {
-    loadUserProfile();
-  }, []);
 
   const submitButton = async (e) => {
     e.preventDefault();
-
-    // On submit of the form, send a POST request with the data to the server.
-    let data = {
-      location: location,
-      instruments: instruments,
-      experience: experience,
-      liked_genres: liked,
-      disliked_genres: disliked,
-      fees: fees,
-    };
     const auth_id = user.sub.split("|")[1];
 
-    const userIDresponse = await fetch(
-      `${process.env.REACT_APP_API_SERVER_URL}/users/` + auth_id
-    );
-    const posts = await userIDresponse.json();
-    const user_id = await posts[0].user_id;
+    // On submit of the form, send a POST request with the data to the server.
+    let userdata = {
+      name: name,
+      email_address: email,
+      auth_id: auth_id,
+    };
+
     const response = await fetch(
-      `${process.env.REACT_APP_API_SERVER_URL}/userprofile/${user_id}`,
+      `${process.env.REACT_APP_API_SERVER_URL}/users`,
       {
-        method: "PUT",
-        body: JSON.stringify(data),
+        method: "POST",
+        body: JSON.stringify(userdata),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
     if (response.status === 200 || response.status === 201) {
-      alert("Successfully updated User Profile!");
+      alert("Successfully created User data!");
+      //navigate("/profile");
+    } else {
+      alert(`Failed to create User data, status code = ${response.status}`);
+    }
+    const userIDresponse = await fetch(
+      `${process.env.REACT_APP_API_SERVER_URL}/users/` + auth_id
+    );
+    const posts = await userIDresponse.json();
+    const userID = await posts[0].user_id;
+    let data = {
+      location: location,
+      instruments: instruments,
+      experience: experience,
+      liked_genres: liked,
+      disliked_genres: disliked,
+      portfolio_link: portfolio,
+      fees: fee,
+      availability: availability,
+      user_id: userID,
+    };
+    const userresponse = await fetch(
+      `${process.env.REACT_APP_API_SERVER_URL}/userprofile`,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (userresponse.status === 200 || userresponse.status === 201) {
+      alert("Successfully created User Profile data!");
       navigate("/profile");
     } else {
-      alert(`Failed to update User Profile, status code = ${response.status}`);
+      alert(
+        `Failed to create User Profile data, status code = ${userresponse.status}`
+      );
     }
   };
 
   return (
-    <header className="App-header3">
-      <div>
-        <ResponsiveDrawer></ResponsiveDrawer>
-      </div>
+    <header className="App-header">
       <Box
         component="main"
         sx={{
@@ -107,7 +120,7 @@ function UpdateUserProfile({ updateProfile }) {
             alignContent: "center",
           }}
         >
-          <h1> Update User Profile</h1>
+          <h1> Let's learn more about you! </h1>
         </Grid>
       </Box>
       <Box
@@ -129,6 +142,22 @@ function UpdateUserProfile({ updateProfile }) {
           }}
         >
           <Form>
+            <Form.Group className="mb-3" controlId="profileName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="name"
+                onChange={(e) => setName(e.target.value)}
+                placeholder={name}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formPhotoLink">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="photo"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={email}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formLocation">
               <Form.Label>Location</Form.Label>
               <Form.Control
@@ -175,7 +204,7 @@ function UpdateUserProfile({ updateProfile }) {
               <Form.Control
                 type="fee"
                 onChange={(e) => setFee(e.target.value)}
-                placeholder={fees}
+                placeholder={10}
               />
             </Form.Group>
 
@@ -189,4 +218,4 @@ function UpdateUserProfile({ updateProfile }) {
   );
 }
 
-export default UpdateUserProfile;
+export default MoreInfo;

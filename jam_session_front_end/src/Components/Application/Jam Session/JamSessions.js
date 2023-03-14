@@ -15,7 +15,6 @@ import "./JamSession.css";
 
 export default function JamSessions({ jamSessions, key }) {
   const { user } = useAuth0();
-  console.log(jamSessions, key, user.email, jamSessions.user_id);
   return (
     <CardGroup>
       <Card
