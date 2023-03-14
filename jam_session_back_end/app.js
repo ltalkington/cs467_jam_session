@@ -20,6 +20,9 @@ app.use(express.static(__dirname + "/public")); // If we have anything that need
  * Routes
  */
 
+app.get("/", (req, res) => {
+  res.status(200).send("Connection good.");
+})
 app.use(jam_session_routes);
 app.use(message_routes);
 app.use(review_routes);
@@ -27,6 +30,10 @@ app.use(media_routes);
 app.use(post_routes);
 app.use(user_routes);
 app.use(profile_routes);
+
+app.get("*", (req, res) => {
+  res.status(400).send("Invalid route. Please try again.");
+})
 
 app.listen(PORT, function () {
   // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
