@@ -23,7 +23,6 @@ import CreateMessages from "./Pages/Application/CRUD/Messages/CreateMessage.js";
 import UpdateTextPost from "./Pages/Application/CRUD/YourPosts/UpdateYourPosts.js";
 import UpdateUserProfile from "./Pages/Application/CRUD/Profile/UpdateProfile";
 import Review from "./Pages/Application/Reviews.js";
-
 import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
@@ -154,7 +153,7 @@ function App() {
 
 async function makeProfileIfNoProfile(user) {
   try {
-    let id = user.sub.split('|')[1];
+    let id = user.sub.split("|")[1];
     let response = await fetch(
       `${process.env.REACT_APP_API_SERVER_URL}/user_profiles/${id}`,
       {
@@ -177,26 +176,32 @@ async function makeProfileIfNoProfile(user) {
         availability: "",
         review_id: "",
       };
-      let profile_response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/user_profiles`, {
-        method: "POST",
-        body: JSON.stringify(profile_inserts),
-      });
+      let profile_response = await fetch(
+        `${process.env.REACT_APP_API_SERVER_URL}/user_profiles`,
+        {
+          method: "POST",
+          body: JSON.stringify(profile_inserts),
+        }
+      );
 
       if (profile_response.status !== 201) {
-        alert('Error creating user profile');
+        alert("Error creating user profile");
       }
     }
   } catch (error) {
-    alert('Error connecting to user profile database');
+    alert("Error connecting to user profile database");
   }
 }
 
 async function makeUserIfNoUser(user) {
-  let id = user.sub.split('|')[1];
+  let id = user.sub.split("|")[1];
   try {
-    let response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/users/${id}`, {
-      method: "GET",
-    });
+    let response = await fetch(
+      `${process.env.REACT_APP_API_SERVER_URL}/users/${id}`,
+      {
+        method: "GET",
+      }
+    );
 
     if (response.status !== 200) {
       let user_inserts = {
@@ -205,16 +210,19 @@ async function makeUserIfNoUser(user) {
         profile_link: "",
         email_address: user.email,
       };
-      let user_response = await fetch(`${process.env.REACT_APP_API_SERVER_URL}/users`, {
-        method: "POST",
-        body: JSON.stringify(user_inserts),
-      });
+      let user_response = await fetch(
+        `${process.env.REACT_APP_API_SERVER_URL}/users`,
+        {
+          method: "POST",
+          body: JSON.stringify(user_inserts),
+        }
+      );
       if (user_response.status !== 201) {
-        alert('Error creating user');
+        alert("Error creating user");
       }
     }
   } catch (error) {
-    alert('Error connecting to user database');
+    alert("Error connecting to user database");
   }
 }
 
