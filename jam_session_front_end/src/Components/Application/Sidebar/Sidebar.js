@@ -113,7 +113,10 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button key="Log Out" onClick={logout}>
+        <ListItem button key="Log Out" onClick={logout({
+          returnTo: "https://main.d4jsy7rjakx88.amplifyapp.com",
+          clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
+        })}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
