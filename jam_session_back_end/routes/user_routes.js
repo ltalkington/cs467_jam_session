@@ -36,14 +36,14 @@ router
     }
   })
   // Reads a User
-  .get(`${path}/:id/user_id`, async function (req, res) {
-    try {
-      await user_controller.getUserByUserId(req.params.id, res);
-    } catch (error) {
-      console.log(JSON.stringify(error));
-      res.status(404).send(JSON.stringify(error));
-    }
-  })
+  // .get(`${path}/:id`, async function (req, res) {
+  //   try {
+  //     await user_controller.getUserByUserId(req.params.id, res);
+  //   } catch (error) {
+  //     console.log(JSON.stringify(error));
+  //     res.status(404).send(JSON.stringify(error));
+  //   }
+  // })
 
   // Updates a User
   .put(`${path}/:id`, async function (req, res) {
