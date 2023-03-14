@@ -17,7 +17,7 @@ function CreateTextPost() {
     e.preventDefault();
 
     if (body === undefined) {
-      alert("invalid entry in body");
+      alert("invalid entry in body for the users");
     } else {
       // On submit of the form, send a POST request with the data to the server.
       const auth_id = user.sub.split("|")[1];
