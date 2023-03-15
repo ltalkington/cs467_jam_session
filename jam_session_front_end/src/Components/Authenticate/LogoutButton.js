@@ -8,7 +8,7 @@ const LogoutButton = ({text}) => {
     const handleLogout = () => {
         logout({
             logoutParams: {
-                returnTo: window.location.origin,
+                returnTo: "/",
             },
         });
     };
