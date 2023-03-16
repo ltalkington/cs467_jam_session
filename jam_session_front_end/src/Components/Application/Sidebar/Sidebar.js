@@ -22,6 +22,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useAuth0 } from "@auth0/auth0-react";
+import LogoutButton from "../../Authenticate/LogoutButton";
 
 const drawerWidth = 240;
 
@@ -113,20 +114,8 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem
-          button
-          key="Log Out"
-          onClick={() =>
-            logout({
-              returnTo: "https://www.jamsessionstudio.net",
-              clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
-            })
-          }
-        >
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Log Out" />
+        <ListItem>
+          <LogoutButton text={"Logout"} />
         </ListItem>
       </List>
     </div>
